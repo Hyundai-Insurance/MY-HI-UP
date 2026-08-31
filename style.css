@@ -1,0 +1,664 @@
+/* ==========================================================
+   MY HI-UP — style.css
+   금융서비스 신뢰감 + 5060세대 가독성을 우선한 모바일 퍼스트 디자인
+   ========================================================== */
+
+:root {
+  --color-bg: #EFF3F9;
+  --color-surface: #FFFFFF;
+  --color-navy-900: #0F2648;
+  --color-navy-800: #16305C;
+  --color-navy-700: #234176;
+  --color-navy-100: #E7ECF6;
+
+  --color-gold: #B8862F;
+  --color-gold-bg: #FBF3E3;
+  --color-gold-deep: #8C6521;
+
+  --color-text: #16202E;
+  --color-text-sub: #5B6472;
+  --color-border: #E2E7EF;
+
+  --color-success: #1F8A5F;
+  --color-success-bg: #E7F5EE;
+  --color-warning: #C0552A;
+  --color-warning-bg: #FBEEE7;
+  --color-muted-bg: #EEF0F3;
+  --color-muted-text: #6C7684;
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  --shadow-card: 0 2px 14px rgba(15, 38, 72, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Malgun Gothic", "맑은 고딕", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  font-feature-settings: "tnum" 1;
+}
+
+.hidden { display: none !important; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ==========================================================
+   레이아웃 공통
+   ========================================================== */
+
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--color-bg);
+  position: relative;
+}
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================
+   화면 1. 로그인(코드 입력) 화면
+   ========================================================== */
+
+.login-screen {
+  justify-content: center;
+  align-items: stretch;
+  padding: 40px 24px 60px;
+}
+
+.brand-block {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--color-navy-800), var(--color-navy-700));
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(15, 38, 72, 0.25);
+}
+
+.brand-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--color-navy-900);
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+}
+
+.brand-sub {
+  font-size: 16px;
+  color: var(--color-text-sub);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.login-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px;
+  box-shadow: var(--shadow-card);
+}
+
+.login-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.login-hint {
+  font-size: 13.5px;
+  color: var(--color-text-sub);
+  margin-bottom: 16px;
+}
+
+.code-input {
+  width: 100%;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-align: center;
+  padding: 18px 12px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background: var(--color-navy-100);
+  color: var(--color-navy-900);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.code-input:focus {
+  border-color: var(--color-navy-700);
+}
+
+.code-input::placeholder {
+  color: #9AA5B4;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.login-error-box {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  font-size: 14.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.primary-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 18px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--color-navy-800);
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 18px rgba(15, 38, 72, 0.22);
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.primary-btn:active {
+  transform: scale(0.98);
+  background: var(--color-navy-900);
+}
+
+.login-foot-note {
+  text-align: center;
+  font-size: 12.5px;
+  color: #9AA5B4;
+  margin-top: 28px;
+  line-height: 1.6;
+}
+
+/* ==========================================================
+   로딩 / 오류 화면
+   ========================================================== */
+
+.center-screen {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 28px;
+  gap: 16px;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--color-navy-100);
+  border-top-color: var(--color-navy-800);
+  border-radius: 50%;
+  animation: spin 0.85s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.center-screen .msg-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-navy-900);
+}
+
+.center-screen .msg-sub {
+  font-size: 14px;
+  color: var(--color-text-sub);
+  line-height: 1.6;
+}
+
+.error-detail {
+  font-size: 12px;
+  color: #9AA5B4;
+  margin-top: 6px;
+  word-break: break-all;
+}
+
+.secondary-btn {
+  margin-top: 12px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-navy-800);
+  background: var(--color-navy-100);
+  border: none;
+  border-radius: var(--radius-md);
+}
+
+/* ==========================================================
+   화면 2. 결과 화면
+   ========================================================== */
+
+.result-screen {
+  padding-bottom: 48px;
+}
+
+.result-header {
+  background: linear-gradient(160deg, var(--color-navy-900), var(--color-navy-700));
+  color: #fff;
+  padding: 20px 20px 26px;
+  border-radius: 0 0 24px 24px;
+  position: relative;
+}
+
+.result-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.back-btn {
+  background: rgba(255,255,255,0.14);
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+.header-brand {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  opacity: 0.92;
+}
+
+.guide-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.guide-closing {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.75);
+}
+
+/* 프로필 */
+.profile-card {
+  margin: -16px 16px 0;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 16px 18px;
+  position: relative;
+  z-index: 2;
+}
+
+.profile-org {
+  font-size: 13.5px;
+  color: var(--color-text-sub);
+  margin-bottom: 8px;
+}
+
+.profile-org span + span::before {
+  content: " · ";
+  color: #C6CCD6;
+}
+
+.profile-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-top: 1px solid var(--color-border);
+  padding-top: 10px;
+}
+
+.profile-name {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--color-navy-900);
+}
+
+.profile-meta {
+  font-size: 13px;
+  color: var(--color-text-sub);
+  text-align: right;
+  line-height: 1.5;
+}
+
+/* 퀵 네비게이션 */
+.quick-nav {
+  display: flex;
+  gap: 8px;
+  padding: 18px 16px 4px;
+}
+
+.quick-nav a {
+  flex: 1;
+  text-align: center;
+  padding: 10px 4px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-navy-800);
+  background: var(--color-navy-100);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+/* 시상 섹션 공통 */
+.award-section {
+  margin: 18px 16px 0;
+  scroll-margin-top: 16px;
+}
+
+.award-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 22px 20px 24px;
+}
+
+.award-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.award-card-title h2 {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--color-navy-900);
+  margin: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.badge-success { background: var(--color-success-bg); color: var(--color-success); }
+.badge-warning { background: var(--color-warning-bg); color: var(--color-warning); }
+.badge-muted { background: var(--color-muted-bg); color: var(--color-muted-text); }
+
+.divider-line {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 16px 0;
+}
+
+/* 개인환산순증 */
+.pi-row-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  margin-bottom: 4px;
+}
+
+.pi-row-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-navy-900);
+  margin-bottom: 16px;
+}
+
+.pi-progress-track {
+  width: 100%;
+  height: 12px;
+  background: var(--color-navy-100);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.pi-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-navy-700), var(--color-navy-800));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.pi-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--color-text-sub);
+  margin-bottom: 18px;
+}
+
+.pi-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.stat-box {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: 14px 14px 12px;
+}
+
+.stat-box-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  margin-bottom: 6px;
+}
+
+.stat-box-value {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--color-navy-900);
+}
+
+.award-highlight {
+  margin-top: 18px;
+  background: var(--color-gold-bg);
+  border: 1.5px solid #EBD9AE;
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  text-align: center;
+}
+
+.award-highlight-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-gold-deep);
+  margin-bottom: 6px;
+}
+
+.award-highlight-value {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--color-gold-deep);
+  letter-spacing: -0.01em;
+}
+
+.award-highlight-sub {
+  font-size: 12.5px;
+  color: var(--color-gold-deep);
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+/* 매출아너스 */
+.honors-summary {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.honors-summary .stat-box { flex: 1; }
+
+.honors-monthly-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.honors-month-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border: 1.5px solid transparent;
+}
+
+.honors-month-card.is-current {
+  background: var(--color-navy-100);
+  border-color: var(--color-navy-700);
+}
+
+.honors-month-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-sub);
+}
+
+.honors-month-card.is-current .honors-month-label {
+  color: var(--color-navy-800);
+  font-weight: 800;
+}
+
+.honors-month-value {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-navy-900);
+}
+
+.honors-month-card.is-current .honors-month-value {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.honors-note {
+  font-size: 12.5px;
+  color: var(--color-text-sub);
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+/* TC스텝업 */
+.tc-progress-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  margin-bottom: 10px;
+}
+
+.tc-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.tc-stat-grid .stat-box-value {
+  font-size: 15.5px;
+}
+
+.tc-income-box {
+  background: var(--color-navy-100);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+
+.tc-income-box .stat-box-label {
+  color: var(--color-navy-800);
+}
+
+.tc-income-box .stat-box-value {
+  font-size: 24px;
+  color: var(--color-navy-900);
+}
+
+.tc-income-sub {
+  font-size: 12px;
+  color: var(--color-navy-700);
+  margin-top: 4px;
+}
+
+.tc-award-box {
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  background: var(--color-gold-bg);
+  border: 1.5px solid #EBD9AE;
+}
+
+.tc-award-box.is-pending {
+  background: var(--color-muted-bg);
+  border-color: var(--color-border);
+}
+
+.tc-award-box-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-gold-deep);
+  margin-bottom: 8px;
+}
+
+.tc-award-box.is-pending .tc-award-box-title {
+  color: var(--color-muted-text);
+}
+
+.tc-award-desc {
+  font-size: 13px;
+  color: var(--color-text-sub);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+/* footer */
+.result-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #9AA5B4;
+  margin-top: 28px;
+  padding: 0 24px;
+  line-height: 1.6;
+}
+
+/* ==========================================================
+   반응형: 태블릿 이상에서도 과도하게 늘어나지 않도록
+   ========================================================== */
+@media (min-width: 520px) {
+  .app-shell {
+    box-shadow: 0 0 40px rgba(15, 38, 72, 0.08);
+  }
+}
