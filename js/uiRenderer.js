@@ -202,9 +202,11 @@ if (tcResult.achieved) {
   badge.className = "badge badge-success";
   desc.textContent = `소득진도 500만원 이상 달성`;
   awardBox.classList.remove("is-pending");
-} else {
-  badge.className = "badge badge-muted";
-  desc.textContent = `500만원까지 ${this.formatWon(tcResult.shortfall)} 부족`;
-  awardBox.classList.remove("is-pending");
-}
+    } else {
+      badge.className = "badge badge-muted";
+      desc.textContent = `500만원까지 ${this.formatWon(tcResult.shortfall)} 부족`;
+      awardBox.classList.remove("is-pending");
+    }
+  },
+
 };
