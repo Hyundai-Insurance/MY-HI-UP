@@ -47,17 +47,15 @@
 
     <div class="login-card">
       <label class="login-label" for="planner-code-input">플래너 코드</label>
-      <div class="login-hint">6자리 숫자를 입력해 주세요</div>
+      <div class="login-hint">하이플래너님! 사번을 입력해주세요!</div>
       <input
-        id="planner-code-input"
-        class="code-input"
-        type="tel"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        maxlength="6"
-        placeholder="000000"
-        autocomplete="off"
-      />
+  id="planner-code-input"
+  class="code-input"
+  type="text"
+  maxlength="6"
+  placeholder="사번 6자리"
+  autocomplete="off"
+/>
       <div id="login-error" class="login-error-box hidden"></div>
       <button id="submit-btn" class="primary-btn">조회하기</button>
     </div>
