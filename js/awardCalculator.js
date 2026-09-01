@@ -125,7 +125,22 @@ const awardCalculator = {
    *   rewardLabel: string
    * }}
    */
-  calculateTCStepUpAward(achievementHistory) {
+  calculateTCStepUpAward(incomeProgress) {
+  const income = Number(incomeProgress) || 0;
+  const target = 5000000;
+
+  const achieved = income >= target;
+  const shortfall = Math.max(target - income, 0);
+
+  return {
+    status: "ready",
+    achieved: achieved,
+    incomeProgress: income,
+    targetAmount: target,
+    shortfall: shortfall,
+    rewardLabel: achieved ? "50만원 (금 반돈)" : "미달성",
+  };
+},
     const rule = CONFIG.AWARD_RULES.tcStepUp;
 
     // 이력 데이터 자체가 없으면(=아직 어떤 달도 집계되지 않았으면) 계산 보류
