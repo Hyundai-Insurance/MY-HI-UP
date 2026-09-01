@@ -99,9 +99,13 @@ const app = {
     // ---- 3) TC스텝업 ----
     // TC 월별 달성이력 컬럼이 현재 데이터에 없으므로 빈 이력을 전달한다.
     // (컬럼이 추가되면 dataLoader에서 실제 이력을 만들어 여기로 전달하면 됨)
-    const emptyHistory = { 7: null, 8: null, 9: null, 10: null, 11: null, 12: null };
-    const tcResult = awardCalculator.calculateTCStepUpAward(emptyHistory);
-    uiRenderer.renderTCStepUp(plannerData, tcResult);
+    // ---- 3) TC스텝업 ----
+const incomeProgress = plannerData.income
+  ? plannerData.income[COLS.income.incomeProgress]
+  : 0;
+
+const tcResult = awardCalculator.calculateTCStepUpAward(incomeProgress);
+uiRenderer.renderTCStepUp(plannerData, tcResult);
 
     uiRenderer.showScreen("result");
   },
