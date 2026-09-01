@@ -196,16 +196,15 @@ const uiRenderer = {
     const badge = this.el("tc-award-badge");
     const desc = this.el("tc-award-desc");
 
-    if (tcResult.status === "insufficient_data") {
-      badge.textContent = "데이터 준비중";
-      badge.className = "badge badge-muted";
-      desc.textContent = "TC등급 월별 달성 이력 데이터가 아직 연동되지 않아 조기달성/유지달성 여부를 계산할 수 없습니다. 관리자가 월별 TC 달성 이력 데이터를 추가하면 자동으로 계산됩니다.";
-      awardBox.classList.add("is-pending");
-    } else {
-      badge.textContent = tcResult.rewardLabel;
-      badge.className = tcResult.rewardLabel === "해당 없음" ? "badge badge-muted" : "badge badge-success";
-      desc.textContent = `조기달성 ${tcResult.earlyAchieved ? "O" : "X"} · 유지달성 ${tcResult.maintainAchieved ? "O" : "X"}`;
-      awardBox.classList.remove("is-pending");
-    }
-  },
+   badge.textContent = tcResult.rewardLabel;
+
+if (tcResult.achieved) {
+  badge.className = "badge badge-success";
+  desc.textContent = `소득진도 500만원 이상 달성`;
+  awardBox.classList.remove("is-pending");
+} else {
+  badge.className = "badge badge-muted";
+  desc.textContent = `500만원까지 ${this.formatWon(tcResult.shortfall)} 부족`;
+  awardBox.classList.remove("is-pending");
+}
 };
