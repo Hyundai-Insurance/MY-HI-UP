@@ -94,82 +94,33 @@ const awardCalculator = {
     };
   },
 
-  /* ============================================================
+    /* ============================================================
    * 3) TC스텝업
    * ============================================================ */
 
   /**
-   * TC스텝업 조기달성/유지달성 여부를 계산.
+   * 현재 소득진도를 기준으로 TC스텝업 시상을 계산합니다.
+   * 소득진도 500만원 이상이면 50만원(금 반돈) 달성.
    *
-   * ⚠️ 매우 중요 — 현재 데이터로는 실제 판정이 불가능합니다.
-   * 환산실적.xlsx / 소득진도.xlsx / 개인목표.xlsx 어디에도
-   * "TC등급 달성 여부"를 나타내는 컬럼이 없습니다.
-   *
-   * 향후 아래와 같은 형태의 월별 달성이력 데이터가 추가되면
-   * 이 함수가 자동으로 정상 계산되도록 미리 구조를 만들어 두었습니다.
-   *
-   *   tcAchievementHistory 예시:
-   *   {
-   *     "086027": { 7: true, 8: false, 9: true, 10: null, 11: null, 12: null }
-   *   }
-   *   (true=TC등급 달성, false=미달성, null=아직 집계 전/데이터 없음)
-   *
-   * 이 이력 데이터를 개인목표.xlsx 또는 별도 파일에
-   * "○월 TC달성여부" 컬럼으로 추가하면 dataLoader에서 불러와
-   * 이 함수의 achievementHistory 인자로 그대로 전달할 수 있습니다.
-   *
-   * @param {{[month:number]: boolean|null}} achievementHistory
-   * @returns {{
-   *   status: 'ready'|'insufficient_data',
-   *   earlyAchieved: boolean|null, maintainAchieved: boolean|null,
-   *   rewardLabel: string
-   * }}
+   * @param {number} incomeProgress 현재 소득진도
    */
   calculateTCStepUpAward(incomeProgress) {
-  const income = Number(incomeProgress) || 0;
-  const target = 5000000;
+    const income = Number(incomeProgress) || 0;
+    const target = 5000000;
 
-  const achieved = income >= target;
-  const shortfall = Math.max(target - income, 0);
+    const achieved = income >= target;
+    const shortfall = Math.max(target - income, 0);
 
-  return {
-    status: "ready",
-    achieved: achieved,
-    incomeProgress: income,
-    targetAmount: target,
-    shortfall: shortfall,
-    rewardLabel: achieved ? "50만원 (금 반돈)" : "미달성",
-  };
-},
-    const rule = CONFIG.AWARD_RULES.tcStepUp;
+    return {
+      status: "ready",
+      achieved: achieved,
+      incomeProgress: income,
+      targetAmount: target,
+      shortfall: shortfall,
+      rewardLabel: achieved ? "50만원 (금 반돈)" : "미달성",
+    };
+  },
 
-    // 이력 데이터 자체가 없으면(=아직 어떤 달도 집계되지 않았으면) 계산 보류
-    const hasAnyData =
-      achievementHistory &&
-      Object.values(achievementHistory).some((v) => v !== null && v !== undefined);
-
-    if (!hasAnyData) {
-      return {
-        status: "insufficient_data",
-        earlyAchieved: null,
-        maintainAchieved: null,
-        rewardLabel: "데이터 준비중",
-      };
-    }
-
-    // 조기달성: 3분기(7~9월) 내 TC등급 달성 이력이 1회라도 있으면 달성
-    const earlyAchieved = rule.earlyAchieveMonths.some((m) => achievementHistory[m] === true);
-
-    // 유지달성: 12월 TC 달성 + 7~12월 중 3회 이상 달성
-    const maintainCount = rule.maintainMonths.filter((m) => achievementHistory[m] === true).length;
-    const finalMonthAchieved = achievementHistory[rule.maintainFinalMonth] === true;
-    const maintainAchieved = finalMonthAchieved && maintainCount >= rule.maintainRequiredCount;
-
-    let rewardLabel = rule.rewardLabels.none;
-    if (earlyAchieved && maintainAchieved) rewardLabel = rule.rewardLabels.both;
-    else if (earlyAchieved) rewardLabel = rule.rewardLabels.early;
-    else if (maintainAchieved) rewardLabel = rule.rewardLabels.maintain;
-
-    return { status: "ready", earlyAchieved, maintainAchieved, rewardLabel };
+};
   },
 };
