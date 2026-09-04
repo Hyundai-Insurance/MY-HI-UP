@@ -662,3 +662,93 @@ button {
     box-shadow: 0 0 40px rgba(15, 38, 72, 0.08);
   }
 }
+/* ==========================================================
+   2026-09 통합 백데이터 업데이트 추가 스타일
+   ========================================================== */
+.total-award-card {
+  margin: 16px 16px 0;
+  padding: 22px 20px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, #fff, var(--color-gold-bg));
+  border: 1.5px solid #EBD9AE;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.total-award-label {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-gold-deep);
+  margin-bottom: 7px;
+}
+.total-award-cash {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--color-navy-900);
+  letter-spacing: -0.02em;
+}
+.total-award-extra {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+}
+.total-award-extra.is-gold {
+  background: var(--color-gold-bg);
+  color: var(--color-gold-deep);
+  border: 1px solid #EBD9AE;
+}
+.total-award-extra.is-challenge {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.pi-month-status-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 14px 0 4px;
+}
+.month-status-item {
+  text-align: center;
+  padding: 11px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+.month-status-month {
+  font-size: 12.5px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--color-text-sub);
+}
+.month-status-text {
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.month-status-item.is-success {
+  background: var(--color-success-bg);
+  border-color: #C6E7D7;
+  color: var(--color-success);
+}
+.month-status-item.is-fail {
+  background: var(--color-warning-bg);
+  border-color: #F0D3C5;
+  color: var(--color-warning);
+}
+.month-status-item.is-ready {
+  background: var(--color-muted-bg);
+  color: var(--color-muted-text);
+}
+
+.honors-history {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.honors-history .stat-box-value {
+  font-size: 16px;
+}

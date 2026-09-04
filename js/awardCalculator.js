@@ -1,124 +1,114 @@
-/**
- * awardCalculator.js
- * ------------------------------------------------------------------
- * 3가지 시상(개인환산순증 / 매출아너스 / TC스텝업)의 계산 로직만 모아둔 파일.
- * UI 코드(uiRenderer.js)는 이 파일의 결과 객체를 받아서 화면에 그리기만 합니다.
- * ------------------------------------------------------------------
- */
-
 const awardCalculator = {
-
-  /* ============================================================
-   * 1) 개인환산순증
-   * ============================================================ */
-
-  /**
-   * @param {number} targetAmount  개인목표.xlsx의 "순증 목표 최저 40 적용"
-   * @param {number} actualAmount  환산실적.xlsx의 "환산실적"
-   * @returns {{
-   *   targetAmount:number, actualAmount:number,
-   *   shortfall:number, achieved:boolean,
-   *   tierLabel:string|null, awardAmount:number
-   * }}
-   */
-  calculatePersonalIncreaseAward(targetAmount, actualAmount) {
-    const target = Number(targetAmount) || 0;
-    const actual = Number(actualAmount) || 0;
-
-    // 부족실적 = 목표 - 실적 (초과 달성 시 0, 음수 표시 금지)
-    const shortfall = Math.max(target - actual, 0);
-    const achieved = actual >= target && target > 0;
-
-    const rule = CONFIG.AWARD_RULES.personalIncrease;
-    let tierLabel = null;
-    let awardAmount = 0;
-
-    // 목표를 달성한 경우에만 시상금 지급 대상
-    if (achieved || !rule.requireGoalMet) {
-      const matchedTier = rule.tiers.find((tier) => actual >= tier.min);
-      if (matchedTier) {
-        tierLabel = matchedTier.label;
-        awardAmount = matchedTier.amount;
-      }
+  calculatePersonalIncreaseAward(piRow, month) {
+    if (!piRow) {
+      return {
+        month, targetAmount: 0, actualAmount: 0, shortfall: 0,
+        achieved: false, awardAmount: 0, displayAwardAmount: 0,
+        beta200Applied: false, betaLabel: "", monthStatuses: {}
+      };
     }
 
-    return { targetAmount: target, actualAmount: actual, shortfall, achieved, tierLabel, awardAmount };
-  },
+    const monthData = piRow.months[month] || { target: 0, actual: 0, shortfall: 0, award: 0, flag: null };
+    const jul = piRow.months[7];
+    const aug = piRow.months[8];
+    const sep = piRow.months[9];
 
-  /* ============================================================
-   * 2) 매출아너스
-   * ============================================================ */
+    const hasRealSeptemberFlag = sep.flag === 0 || sep.flag === 1;
+    const betaSeptemberAchieved = CONFIG.AWARD_RULES.personalIncrease.betaSeptember200 && jul.flag === 1 && aug.flag === 1;
 
-  /**
-   * 월별 실적으로부터 평균실적/등급/시상금을 계산.
-   *
-   * ⚠️ 데이터 구조 안내
-   * 현재 첨부된 환산실적.xlsx 에는 "이번 달 환산실적" 스냅샷 1건만 존재하고,
-   * 7월/8월/9월을 각각 구분하는 월별 컬럼은 없습니다.
-   * 따라서 이번 버전에서는 "현재 월"의 실적만 실제 데이터로 채우고,
-   * 나머지 두 달은 monthlyPerformance 값이 null(데이터 없음)로 표시됩니다.
-   * 평균실적은 "값이 존재하는 달"만으로 계산하도록 설계했으므로,
-   * 향후 관리자가 월별 실적 컬럼(예: 7월실적/8월실적/9월실적)을
-   * 환산실적.xlsx 에 추가하면 이 함수 수정 없이 자동으로 3개월 평균이 반영됩니다.
-   *
-   * @param {{[month:number]: number|null}} monthlyPerformance  예: {7:null, 8:700000, 9:null}
-   * @returns {{
-   *   monthlyPerformance:object, availableMonths:number[],
-   *   averagePerformance:number, grade:string, awardAmount:number
-   * }}
-   */
-  calculateHonorsAward(monthlyPerformance) {
-    const months = CONFIG.AWARD_RULES.honors.quarterMonths;
-    const availableValues = months
-      .map((m) => monthlyPerformance[m])
-      .filter((v) => v !== null && v !== undefined);
+    let sepAchieved;
+    let sepStatusLabel;
+    if (hasRealSeptemberFlag) {
+      sepAchieved = sep.flag === 1;
+      sepStatusLabel = sepAchieved ? "달성" : "미달성";
+    } else if (betaSeptemberAchieved) {
+      sepAchieved = true;
+      sepStatusLabel = "달성 (테스트)";
+    } else {
+      sepAchieved = false;
+      sepStatusLabel = "데이터 준비중";
+    }
 
-    const availableMonths = months.filter(
-      (m) => monthlyPerformance[m] !== null && monthlyPerformance[m] !== undefined
-    );
+    const allThreeAchieved = jul.flag === 1 && aug.flag === 1 && sepAchieved;
 
-    const averagePerformance =
-      availableValues.length > 0
-        ? Math.round(availableValues.reduce((sum, v) => sum + v, 0) / availableValues.length)
-        : 0;
+    let displayAwardAmount = monthData.award || 0;
+    let beta200Applied = false;
+    let betaLabel = "";
 
-    const rule = CONFIG.AWARD_RULES.honors;
-    const matchedTier = rule.tiers.find((tier) => averagePerformance >= tier.min);
+    if (month === 9 && allThreeAchieved) {
+      const septemberBaseAward = hasRealSeptemberFlag
+        ? (sep.award || 0)
+        : (aug.award || 0);
+      displayAwardAmount = septemberBaseAward * 2;
+      beta200Applied = !hasRealSeptemberFlag;
+      betaLabel = hasRealSeptemberFlag
+        ? "7·8·9월 연속 달성 · 9월 시상금 200% 적용"
+        : "7·8월 달성 기준 베타테스트 · 9월 시상금 200% 적용";
+    }
 
     return {
-      monthlyPerformance,
-      availableMonths,
-      averagePerformance,
-      grade: matchedTier ? matchedTier.grade : rule.notAchievedGrade,
-      awardAmount: matchedTier ? matchedTier.amount : 0,
+      month,
+      targetAmount: monthData.target || 0,
+      actualAmount: monthData.actual || 0,
+      shortfall: monthData.shortfall !== null && monthData.shortfall !== undefined
+        ? Math.max(Number(monthData.shortfall) || 0, 0)
+        : Math.max((monthData.target || 0) - (monthData.actual || 0), 0),
+      achieved: month === 9 ? sepAchieved : monthData.flag === 1,
+      awardAmount: monthData.award || 0,
+      displayAwardAmount,
+      beta200Applied,
+      betaLabel,
+      monthStatuses: {
+        7: jul.flag === 1 ? "달성" : "미달성",
+        8: aug.flag === 1 ? "달성" : "미달성",
+        9: sepStatusLabel,
+      },
     };
   },
 
-    /* ============================================================
-   * 3) TC스텝업
-   * ============================================================ */
+  getHonorsResult(honorsRow) {
+    if (!honorsRow) {
+      return {
+        monthlyPerformance: { 7: 0, 8: 0, 9: 0 },
+        averagePerformance: 0,
+        grade: "-",
+        awardAmount: 0,
+        q1Grade: "-",
+        q2Grade: "-",
+      };
+    }
+    return honorsRow;
+  },
 
-  /**
-   * 현재 소득진도를 기준으로 TC스텝업 시상을 계산합니다.
-   * 소득진도 500만원 이상이면 50만원(금 반돈) 달성.
-   *
-   * @param {number} incomeProgress 현재 소득진도
-   */
-  calculateTCStepUpAward(incomeProgress) {
-    const income = Number(incomeProgress) || 0;
-    const target = 5000000;
+  getTCStepUpResult(tcRow) {
+    if (!tcRow) return { eligible: false };
 
-    const achieved = income >= target;
-    const shortfall = Math.max(target - income, 0);
+    const status = tcRow.status.replace(/\s+/g, " ");
+    const isEarly = status.includes("조기") && status.includes("달성");
+    const isMaintain = status.includes("유지") && status.includes("도전자");
 
     return {
-      status: "ready",
-      achieved: achieved,
-      incomeProgress: income,
-      targetAmount: target,
-      shortfall: shortfall,
-      rewardLabel: achieved ? "50만원 (금 반돈)" : "미달성",
+      eligible: true,
+      ...tcRow,
+      isEarly,
+      isMaintain,
+      rewardText: isEarly
+        ? "금 반돈 (500,000원)"
+        : isMaintain
+          ? "금 반돈 (500,000원) 도전!"
+          : "해당 없음",
+      confirmedGoldAmount: isEarly ? CONFIG.AWARD_RULES.tcStepUp.goldHalfDonAmount : 0,
     };
   },
 
+  calculateTotalSummary(piResult, honorsResult, tcResult) {
+    const cashTotal = (piResult.displayAwardAmount || 0) + (honorsResult.awardAmount || 0);
+    return {
+      cashTotal,
+      tcEligible: !!tcResult.eligible,
+      tcEarly: !!tcResult.isEarly,
+      tcMaintain: !!tcResult.isMaintain,
+      tcRewardText: tcResult.eligible ? tcResult.rewardText : "",
+    };
+  },
 };
