@@ -23,35 +23,35 @@ const awardCalculator = {
     const augAward = augAchieved ? (Number(aug.award) || 0) : 0;
     const currentSecuredAmount = julAward + augAward;
 
-    const hasSeptemberActualData =
-      (Number(sep.target) || 0) !== 0 ||
-      (Number(sep.actual) || 0) !== 0 ||
-      (Number(sep.award) || 0) !== 0 ||
-      sep.flag === 0 || sep.flag === 1;
-
+    // 베타테스트 기준
+    // 1) 7·8월 모두 달성한 사람은 현재 9월 실적/달성여부가 0이어도
+    //    9월도 달성한다고 가정해 예상 시상금을 보여준다.
+    // 2) 실제 9월 시상금이 생성된 경우에는 그 9월 시상금을 기준으로 200% 적용한다.
+    // 3) 아직 실제 9월 시상금이 없으면 8월 시상금을 '예상 9월 기본 시상금'으로 임시 사용한다.
     let septemberExpectedAmount = 0;
-    let sepStatusLabel = "데이터 준비중";
+    let sepStatusLabel = "미달성";
     let beta200Applied = false;
 
-    if (hasSeptemberActualData) {
-      if (sepAchievedActual) {
-        sepStatusLabel = "달성";
-        // 실제 운영 기준: 7·8·9월 모두 달성 시 9월 시상금의 200%
-        septemberExpectedAmount = julAchieved && augAchieved
-          ? (Number(sep.award) || 0) * 2
-          : (Number(sep.award) || 0);
-      } else {
-        sepStatusLabel = "미달성";
-        septemberExpectedAmount = 0;
-      }
-    } else if (CONFIG.AWARD_RULES.personalIncrease.betaSeptember200 && julAchieved && augAchieved) {
-      // 베타테스트: 7·8월 달성자는 9월도 달성한다고 가정.
-      // 아직 실제 9월 시상금이 없으므로 8월 시상금을 '예상 9월 기본 시상금'으로 사용한다.
-      // 화면에는 실제 제도 기준인 '9월 시상금 × 200%'로 안내한다.
-      const projectedSeptemberBaseAward = Number(aug.award) || 0;
+    const betaEligible =
+      CONFIG.AWARD_RULES.personalIncrease.betaSeptember200 &&
+      julAchieved && augAchieved;
+
+    if (betaEligible) {
+      const actualSeptemberBaseAward = Number(sep.award) || 0;
+      const projectedSeptemberBaseAward = actualSeptemberBaseAward > 0
+        ? actualSeptemberBaseAward
+        : (Number(aug.award) || 0);
+
       septemberExpectedAmount = projectedSeptemberBaseAward * 2;
-      sepStatusLabel = "달성 예상";
-      beta200Applied = true;
+      sepStatusLabel = actualSeptemberBaseAward > 0 && sepAchievedActual
+        ? "달성"
+        : "달성 예상";
+      beta200Applied = !(actualSeptemberBaseAward > 0 && sepAchievedActual);
+    } else if (sepAchievedActual) {
+      septemberExpectedAmount = Number(sep.award) || 0;
+      sepStatusLabel = "달성";
+    } else if ((Number(sep.actual) || 0) === 0 && (Number(sep.award) || 0) === 0) {
+      sepStatusLabel = "미달성";
     }
 
     const monthAwards = {
