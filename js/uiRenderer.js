@@ -42,7 +42,7 @@ const uiRenderer = {
   },
 
   renderGuideHeader() {
-    this.el("guide-title").textContent = dateHelper.getGuideTitle();
+    this.el("guide-title").textContent = "3분기 HI-UP";
     this.el("guide-closing").textContent = dateHelper.getClosingDateLabel();
   },
 
@@ -84,7 +84,11 @@ const uiRenderer = {
     this.el("pi-target").textContent = this.formatWon(result.targetAmount);
     this.el("pi-actual").textContent = this.formatWon(result.actualAmount);
     this.el("pi-shortfall").textContent = this.formatWon(result.shortfall);
-    this.el("pi-award").textContent = this.formatWon(result.displayAwardAmount);
+
+    this.el("pi-current-award").textContent = this.formatWon(result.currentSecuredAmount);
+    this.el("pi-september-award").textContent = this.formatWon(result.septemberExpectedAmount);
+    this.el("pi-forecast-note").textContent = result.forecastNote || "7·8월 달성자 기준, 9월 달성 가정";
+    this.el("pi-award").textContent = this.formatWon(result.totalAwardAmount);
 
     const percent = result.targetAmount > 0
       ? Math.min(100, Math.round((result.actualAmount / result.targetAmount) * 100))
@@ -92,28 +96,25 @@ const uiRenderer = {
     this.el("pi-progress-fill").style.width = `${percent}%`;
     this.el("pi-progress-percent").textContent = `${percent}%`;
 
+    // 개인환산순증 제목 옆 상태 배지는 사용하지 않음
     const statusBadge = this.el("pi-status-badge");
-    if (result.month === 9 && result.beta200Applied) {
-      statusBadge.textContent = "베타 200%";
-      statusBadge.className = "badge badge-success";
-    } else if (result.achieved) {
-      statusBadge.textContent = "목표 달성";
-      statusBadge.className = "badge badge-success";
-    } else {
-      statusBadge.textContent = result.month === 9 ? "데이터 준비중" : "목표 미달성";
-      statusBadge.className = "badge badge-warning";
-    }
+    if (statusBadge) statusBadge.classList.add("hidden");
 
-    this.el("pi-tier-label").textContent = result.betaLabel || "월별 환산순증 시상 현황";
+    this.el("pi-tier-label").textContent = "7·8·9월 개인환산순증 시상 현황";
 
     const statusWrap = this.el("pi-month-status-wrap");
     statusWrap.innerHTML = "";
     [7, 8, 9].forEach((m) => {
       const status = result.monthStatuses[m];
+      const award = result.monthAwards[m] || 0;
       const item = document.createElement("div");
       const success = status.startsWith("달성");
       item.className = `month-status-item ${success ? "is-success" : status === "데이터 준비중" ? "is-ready" : "is-fail"}`;
-      item.innerHTML = `<div class="month-status-month">${m}월</div><div class="month-status-text">${status}</div>`;
+      item.innerHTML = `
+        <div class="month-status-month">${m}월</div>
+        <div class="month-status-text">${status}</div>
+        <div class="month-status-award">${this.formatWon(award)}</div>
+      `;
       statusWrap.appendChild(item);
     });
   },
