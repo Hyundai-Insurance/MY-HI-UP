@@ -87,7 +87,9 @@ const uiRenderer = {
 
     this.el("pi-current-award").textContent = this.formatWon(result.currentSecuredAmount);
     this.el("pi-september-award").textContent = this.formatWon(result.septemberExpectedAmount);
-    this.el("pi-forecast-note").textContent = result.forecastNote || "7·8월 달성자 기준, 9월 달성 가정";
+    this.el("pi-final-award").textContent = this.formatWon(result.totalAwardAmount);
+    this.el("pi-additional-award").textContent = this.formatWon(result.septemberExpectedAmount);
+    this.el("pi-forecast-note").textContent = result.forecastNote || "7·8월 달성자 기준, 9월에도 달성한다고 가정한 예상 금액입니다.";
     this.el("pi-award").textContent = this.formatWon(result.totalAwardAmount);
 
     const percent = result.targetAmount > 0

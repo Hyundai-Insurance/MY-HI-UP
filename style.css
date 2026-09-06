@@ -743,6 +743,23 @@ button {
   color: var(--color-muted-text);
 }
 
+
+.month-status-award {
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid rgba(91, 100, 114, 0.14);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.month-status-item.is-success .month-status-award {
+  color: var(--color-success);
+}
+.month-status-item.is-fail .month-status-award,
+.month-status-item.is-ready .month-status-award {
+  color: var(--color-muted-text);
+}
+
 .honors-history {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -751,4 +768,213 @@ button {
 }
 .honors-history .stat-box-value {
   font-size: 16px;
+}
+
+/* ==========================================================
+   3분기 개인환산순증 예상 시상금 요약
+   ========================================================== */
+.pi-forecast-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.pi-forecast-box {
+  background: var(--color-navy-100);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 15px 12px;
+  text-align: center;
+}
+
+.pi-forecast-box.is-september {
+  background: var(--color-gold-bg);
+  border-color: #EBD9AE;
+}
+
+.pi-forecast-label {
+  min-height: 34px;
+  font-size: 12.5px;
+  line-height: 1.35;
+  font-weight: 800;
+  color: var(--color-text-sub);
+  margin-bottom: 6px;
+}
+
+.pi-forecast-box.is-september .pi-forecast-label {
+  color: var(--color-gold-deep);
+}
+
+.pi-forecast-value {
+  font-size: 21px;
+  font-weight: 900;
+  color: var(--color-navy-900);
+  letter-spacing: -0.02em;
+}
+
+.pi-forecast-box.is-september .pi-forecast-value {
+  color: var(--color-gold-deep);
+}
+
+.pi-forecast-sub {
+  margin-top: 5px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--color-text-sub);
+}
+
+.pi-forecast-box.is-september .pi-forecast-sub {
+  color: var(--color-gold-deep);
+}
+
+.pi-forecast-note {
+  margin-top: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-sub);
+  text-align: center;
+}
+
+
+/* ==========================================================
+   개인환산순증 동기부여형 비교 영역
+   현재 확보 금액 → 9월 달성 후 최종 금액을 한눈에 비교
+   ========================================================== */
+.pi-motivation-wrap {
+  margin-top: 18px;
+}
+
+.pi-motivation-wrap .pi-forecast-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+  margin-top: 0;
+}
+
+.pi-forecast-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 900;
+  color: #9AA9BF;
+}
+
+.pi-motivation-wrap .pi-forecast-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 16px 10px 14px;
+}
+
+.pi-motivation-wrap .pi-forecast-box:not(.is-september) {
+  background: #F2F6FC;
+  border-color: #D8E2F1;
+}
+
+.pi-motivation-wrap .pi-forecast-box.is-september {
+  background: #FFF3F5;
+  border-color: #F3CDD4;
+}
+
+.pi-forecast-icon {
+  min-height: 20px;
+  margin-bottom: 5px;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: -0.18em;
+  color: #9AA9BF;
+}
+
+.pi-forecast-box.is-september .pi-forecast-icon {
+  letter-spacing: 0;
+}
+
+.pi-motivation-wrap .pi-forecast-label {
+  min-height: auto;
+  margin-bottom: 7px;
+  font-size: 12.5px;
+}
+
+.pi-motivation-wrap .pi-forecast-value {
+  font-size: clamp(20px, 5.7vw, 25px);
+  white-space: nowrap;
+}
+
+.pi-motivation-wrap .pi-forecast-box.is-september .pi-forecast-value,
+.pi-motivation-wrap .pi-forecast-box.is-september .pi-forecast-label {
+  color: #C63B50;
+}
+
+.pi-more-reward {
+  margin-top: 12px;
+  padding: 14px 12px;
+  border-radius: var(--radius-md);
+  background: #FFF2F4;
+  border: 1px solid #F4D4DA;
+  text-align: center;
+}
+
+.pi-more-reward-main {
+  color: #C92F48;
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 800;
+}
+
+.pi-more-reward-main strong {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.pi-more-reward-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--color-text-sub);
+}
+
+.pi-september-detail {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 10px;
+  row-gap: 3px;
+  align-items: center;
+  margin-top: 10px;
+  padding: 11px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.pi-september-detail span {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-text-sub);
+}
+
+.pi-september-detail strong {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--color-navy-900);
+}
+
+.pi-september-detail small {
+  grid-column: 1 / -1;
+  font-size: 11.5px;
+  color: var(--color-text-sub);
+}
+
+@media (max-width: 380px) {
+  .pi-motivation-wrap .pi-forecast-grid {
+    grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr);
+    gap: 5px;
+  }
+  .pi-forecast-arrow { font-size: 22px; }
+  .pi-motivation-wrap .pi-forecast-box { padding-left: 7px; padding-right: 7px; }
+  .pi-motivation-wrap .pi-forecast-value { font-size: 19px; }
 }

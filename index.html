@@ -54,7 +54,7 @@
         <span class="header-brand">MY HI-UP</span>
         <button id="back-btn" class="back-btn">← 다시 조회</button>
       </div>
-      <h1 id="guide-title" class="guide-title">시상 가이드</h1>
+      <h1 id="guide-title" class="guide-title">3분기 HI-UP</h1>
       <div id="guide-closing" class="guide-closing">전일 마감 기준</div>
     </div>
 
@@ -67,7 +67,7 @@
     </div>
 
     <div class="total-award-card">
-      <div class="total-award-label">MY HI-UP 예상 시상금</div>
+      <div class="total-award-label">3분기 HI-UP 누적 예상 시상금</div>
       <div id="total-award-cash" class="total-award-cash">-</div>
       <div id="total-award-extra" class="total-award-extra hidden"></div>
     </div>
@@ -80,7 +80,7 @@
 
     <section id="section-pi" class="award-section">
       <div class="award-card">
-        <div class="award-card-title"><h2>개인환산순증</h2><span id="pi-status-badge" class="badge badge-warning">-</span></div>
+        <div class="award-card-title"><h2>개인환산순증</h2><span id="pi-status-badge" class="badge badge-warning hidden">-</span></div>
         <div id="pi-tier-label" class="honors-note" style="margin-top:0;margin-bottom:14px;">-</div>
         <div id="pi-month-status-wrap" class="pi-month-status-wrap"></div>
         <hr class="divider-line" />
@@ -92,7 +92,34 @@
           <div class="stat-box"><div class="stat-box-label">환산실적</div><div id="pi-actual" class="stat-box-value">-</div></div>
           <div class="stat-box"><div class="stat-box-label">부족실적</div><div id="pi-shortfall" class="stat-box-value">-</div></div>
         </div>
-        <div class="award-highlight"><div class="award-highlight-label">예상 시상금</div><div id="pi-award" class="award-highlight-value">-</div></div>
+        <div class="pi-motivation-wrap">
+          <div class="pi-forecast-grid">
+            <div class="pi-forecast-box">
+              <div class="pi-forecast-icon">●●●</div>
+              <div class="pi-forecast-label">현재까지 확보한 시상금</div>
+              <div id="pi-current-award" class="pi-forecast-value">-</div>
+              <div class="pi-forecast-sub">7월 + 8월 누적</div>
+            </div>
+            <div class="pi-forecast-arrow" aria-hidden="true">→</div>
+            <div class="pi-forecast-box is-september">
+              <div class="pi-forecast-icon">🎁</div>
+              <div class="pi-forecast-label">9월까지 달성하면</div>
+              <div id="pi-final-award" class="pi-forecast-value">-</div>
+              <div class="pi-forecast-sub">3분기 총 예상 시상금</div>
+            </div>
+          </div>
+          <div class="pi-more-reward">
+            <div class="pi-more-reward-main">🎉 지금보다 <strong id="pi-additional-award">-</strong> 더 받을 수 있어요!</div>
+            <div class="pi-more-reward-sub">9월도 달성하고, 더 큰 보상을 완성해보세요!</div>
+          </div>
+          <div class="pi-september-detail">
+            <span>9월 달성 시 예상 시상금</span>
+            <strong id="pi-september-award">-</strong>
+            <small>9월 시상금 × 200% 적용</small>
+          </div>
+        </div>
+        <div class="pi-forecast-note" id="pi-forecast-note">7·8월 달성자 기준, 9월에도 달성한다고 가정한 예상 금액입니다.</div>
+        <div class="award-highlight"><div class="award-highlight-label">3분기 개인환산순증 예상 시상금</div><div id="pi-award" class="award-highlight-value">-</div><div class="award-highlight-sub">현재 확보 시상금 + 9월 달성 시 예상 시상금</div></div>
       </div>
     </section>
 
