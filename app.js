@@ -56,7 +56,12 @@ const app = {
       return;
     }
 
-    this._renderResultScreen(rawInput);
+    try {
+      this._renderResultScreen(rawInput);
+    } catch (err) {
+      console.error("[MY HI-UP] 조회 화면 렌더링 실패:", err);
+      uiRenderer.renderError("render_fail", String(err && err.message ? err.message : err));
+    }
   },
 
   _renderResultScreen(code) {

@@ -85,12 +85,13 @@ const uiRenderer = {
     this.el("pi-actual").textContent = this.formatWon(result.actualAmount);
     this.el("pi-shortfall").textContent = this.formatWon(result.shortfall);
 
-    this.el("pi-current-award").textContent = this.formatWon(result.currentSecuredAmount);
-    this.el("pi-september-award").textContent = this.formatWon(result.septemberExpectedAmount);
-    this.el("pi-final-award").textContent = this.formatWon(result.totalAwardAmount);
-    this.el("pi-additional-award").textContent = this.formatWon(result.septemberExpectedAmount);
-    this.el("pi-forecast-note").textContent = result.forecastNote || "7·8월 달성자 기준, 9월에도 달성한다고 가정한 예상 금액입니다.";
-    this.el("pi-award").textContent = this.formatWon(result.totalAwardAmount);
+    const setText = (id, value) => { const node = this.el(id); if (node) node.textContent = value; };
+    setText("pi-current-award", this.formatWon(result.currentSecuredAmount));
+    setText("pi-september-award", this.formatWon(result.septemberExpectedAmount));
+    setText("pi-final-award", this.formatWon(result.totalAwardAmount));
+    setText("pi-additional-award", this.formatWon(result.septemberExpectedAmount));
+    setText("pi-forecast-note", result.forecastNote || "7·8월 달성자 기준, 9월에도 달성한다고 가정한 예상 금액입니다.");
+    setText("pi-award", this.formatWon(result.totalAwardAmount));
 
     const percent = result.targetAmount > 0
       ? Math.min(100, Math.round((result.actualAmount / result.targetAmount) * 100))
@@ -110,11 +111,12 @@ const uiRenderer = {
       const status = result.monthStatuses[m];
       const award = result.monthAwards[m] || 0;
       const item = document.createElement("div");
-      const success = status.startsWith("달성");
-      item.className = `month-status-item ${success ? "is-success" : status === "데이터 준비중" ? "is-ready" : "is-fail"}`;
+      const safeStatus = String(status || "데이터 준비중");
+      const success = safeStatus.startsWith("달성");
+      item.className = `month-status-item ${success ? "is-success" : safeStatus === "데이터 준비중" ? "is-ready" : "is-fail"}`;
       item.innerHTML = `
         <div class="month-status-month">${m}월</div>
-        <div class="month-status-text">${status}</div>
+        <div class="month-status-text">${safeStatus}</div>
         <div class="month-status-award">${this.formatWon(award)}</div>
       `;
       statusWrap.appendChild(item);
