@@ -23,34 +23,38 @@ const awardCalculator = {
     const augAward = augAchieved ? (Number(aug.award) || 0) : 0;
     const currentSecuredAmount = julAward + augAward;
 
-    // 베타테스트 기준
-    // 1) 7·8월 모두 달성한 사람은 현재 9월 실적/달성여부가 0이어도
-    //    9월도 달성한다고 가정해 예상 시상금을 보여준다.
-    // 2) 실제 9월 시상금이 생성된 경우에는 그 9월 시상금을 기준으로 200% 적용한다.
-    // 3) 아직 실제 9월 시상금이 없으면 8월 시상금을 '예상 9월 기본 시상금'으로 임시 사용한다.
+    // 9월 예상 시상금 표시 기준
+    // - 실제 9월 데이터가 있으면: 실제 9월 기본 시상금을 사용
+    // - 실제 9월 데이터가 아직 없고 7·8월 모두 달성했다면:
+    //   8월 시상금을 9월 기본 시상금으로 가정하여 × 200%
+    //   (화면 문구는 실제 제도 기준인 “9월 시상금 × 200%”로 표시)
     let septemberExpectedAmount = 0;
     let sepStatusLabel = "미달성";
     let beta200Applied = false;
 
-    const betaEligible =
-      CONFIG.AWARD_RULES.personalIncrease.betaSeptember200 &&
-      julAchieved && augAchieved;
+    const hasSeptemberData =
+      (Number(sep.actual) || 0) > 0 ||
+      (Number(sep.award) || 0) > 0 ||
+      sepAchievedActual;
 
-    if (betaEligible) {
-      const actualSeptemberBaseAward = Number(sep.award) || 0;
-      const projectedSeptemberBaseAward = actualSeptemberBaseAward > 0
-        ? actualSeptemberBaseAward
-        : (Number(aug.award) || 0);
+    const consecutiveEligible = julAchieved && augAchieved;
 
+    if (consecutiveEligible && !hasSeptemberData) {
+      // 테스트용 예상치: 9월 데이터가 없으므로 8월 기본 시상금을 대체값으로 사용
+      const projectedSeptemberBaseAward = augAward;
       septemberExpectedAmount = projectedSeptemberBaseAward * 2;
-      sepStatusLabel = actualSeptemberBaseAward > 0 && sepAchievedActual
-        ? "달성"
-        : "달성 예상";
-      beta200Applied = !(actualSeptemberBaseAward > 0 && sepAchievedActual);
+      sepStatusLabel = "달성 예상";
+      beta200Applied = true;
+    } else if (consecutiveEligible && sepAchievedActual) {
+      // 실제 9월 달성 데이터가 생긴 뒤에는 실제 9월 시상금 × 200%
+      septemberExpectedAmount = (Number(sep.award) || 0) * 2;
+      sepStatusLabel = "달성";
     } else if (sepAchievedActual) {
       septemberExpectedAmount = Number(sep.award) || 0;
       sepStatusLabel = "달성";
-    } else if ((Number(sep.actual) || 0) === 0 && (Number(sep.award) || 0) === 0) {
+    } else if (consecutiveEligible && hasSeptemberData) {
+      // 9월 데이터가 일부 들어왔지만 아직 달성 전인 경우, 현재 시점에서는 예상 200% 미반영
+      septemberExpectedAmount = 0;
       sepStatusLabel = "미달성";
     }
 
