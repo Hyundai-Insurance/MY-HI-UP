@@ -15,7 +15,7 @@
 <title>MY HI-UP · 나의 실적과 시상 현황</title>
 <meta name="description" content="플래너 코드로 개인환산순증, 매출아너스, TC스텝업 시상 현황을 한눈에 확인하세요." />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
-<link rel="stylesheet" href="style.css?v=20260906c" />
+<link rel="stylesheet" href="style.css?v=20260907a" />
 </head>
 <body>
 <div class="app-shell">
@@ -92,7 +92,7 @@
           <div class="stat-box"><div class="stat-box-label">환산실적</div><div id="pi-actual" class="stat-box-value">-</div></div>
           <div class="stat-box"><div class="stat-box-label">부족실적</div><div id="pi-shortfall" class="stat-box-value">-</div></div>
         </div>
-        <div class="pi-motivation-wrap">
+        <div id="pi-motivation-wrap" class="pi-motivation-wrap">
           <div class="pi-forecast-grid">
             <div class="pi-forecast-box">
               <div class="pi-forecast-icon pi-forecast-icon-blue">🎁</div>
@@ -127,10 +127,6 @@
       <div class="award-card">
         <div class="award-card-title"><h2>매출아너스</h2></div>
         <hr class="divider-line" />
-        <div class="honors-history">
-          <div class="stat-box"><div class="stat-box-label">26.1분기 등급</div><div id="honors-q1" class="stat-box-value">-</div></div>
-          <div class="stat-box"><div class="stat-box-label">26.2분기 등급</div><div id="honors-q2" class="stat-box-value">-</div></div>
-        </div>
         <div class="honors-summary">
           <div class="stat-box"><div class="stat-box-label">평균실적</div><div id="honors-average" class="stat-box-value">-</div></div>
           <div class="stat-box"><div class="stat-box-label">달성 등급</div><div id="honors-grade" class="stat-box-value">-</div></div>
@@ -159,12 +155,12 @@
     <p class="result-footer">본 화면은 테스트용 MVP이며, 표시된 실적/시상금은 업로드된 백데이터를 기준으로 계산됩니다.<br />실제 운영 시에는 별도 인증 및 보안 구조 적용이 필요합니다.</p>
   </div>
 </div>
-<script src="js/xlsxLite.js?v=20260906c"></script>
-<script src="js/config.js?v=20260906c"></script>
-<script src="js/dateHelper.js?v=20260906c"></script>
-<script src="js/dataLoader.js?v=20260906c"></script>
-<script src="js/awardCalculator.js?v=20260906f"></script>
-<script src="js/uiRenderer.js?v=20260906f"></script>
-<script src="app.js?v=20260906f"></script>
+<script src="js/xlsxLite.js?v=20260907a"></script>
+<script src="js/config.js?v=20260907a"></script>
+<script src="js/dateHelper.js?v=20260907a"></script>
+<script src="js/dataLoader.js?v=20260907a"></script>
+<script src="js/awardCalculator.js?v=20260907a"></script>
+<script src="js/uiRenderer.js?v=20260907a"></script>
+<script src="app.js?v=20260907a"></script>
 </body>
 </html>

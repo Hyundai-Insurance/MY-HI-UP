@@ -93,6 +93,11 @@ const uiRenderer = {
     setText("pi-forecast-note", result.forecastNote || "7·8월 달성자 기준, 9월에도 달성한다고 가정한 예상 금액입니다.");
     setText("pi-award", this.formatWon(result.totalAwardAmount));
 
+    const motivationWrap = this.el("pi-motivation-wrap");
+    const forecastNote = this.el("pi-forecast-note");
+    if (motivationWrap) motivationWrap.classList.toggle("hidden", !result.showSeptemberForecast);
+    if (forecastNote) forecastNote.classList.toggle("hidden", !result.showSeptemberForecast);
+
     const percent = result.targetAmount > 0
       ? Math.min(100, Math.round((result.actualAmount / result.targetAmount) * 100))
       : 0;
@@ -127,8 +132,6 @@ const uiRenderer = {
     this.el("honors-grade").textContent = result.grade || "-";
     this.el("honors-average").textContent = this.formatWon(result.averagePerformance || 0);
     this.el("honors-award").textContent = this.formatWon(result.awardAmount || 0);
-    this.el("honors-q1").textContent = result.q1Grade || "-";
-    this.el("honors-q2").textContent = result.q2Grade || "-";
 
     const wrap = this.el("honors-monthly-wrap");
     wrap.innerHTML = "";

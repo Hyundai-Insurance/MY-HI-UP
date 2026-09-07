@@ -9,7 +9,6 @@ const dataLoader = {
     if (rawCode === null || rawCode === undefined) return "";
     const str = String(rawCode).trim().toUpperCase();
     if (!str) return "";
-    // 숫자 5자리 이하만 앞에 0을 붙임. 영문 혼합 코드는 그대로 사용.
     return /^\d+$/.test(str) ? str.padStart(6, "0") : str;
   },
 
@@ -40,41 +39,39 @@ const dataLoader = {
   _parsePersonalIncrease(rows) {
     const I = CONFIG.INDEX.personalIncrease;
     return rows.slice(CONFIG.DATA_START_ROWS.personalIncrease)
-      .map((r) => ({
-        region: this._cell(r, I.region),
-        branch: this._cell(r, I.branch),
-        code: this.normalizePlannerCode(this._cell(r, I.code)),
-        name: this._cell(r, I.name),
-        careerMonth: this._toNumber(this._cell(r, I.careerMonth)),
-        months: {
-          7: {
-            target: this._toNumber(this._cell(r, I.julTarget)),
-            actual: this._toNumber(this._cell(r, I.julActual)),
-            shortfall: this._toNumber(this._cell(r, I.julShortfall)),
-            award: this._toNumber(this._cell(r, I.julAward)) || 0,
-            status: this._cell(r, I.julStatus),
-            flag: this._toNumber(this._cell(r, I.julFlag)),
+      .map((r) => {
+        const target = this._toNumber(this._cell(r, I.commonTarget)) || 0;
+        return {
+          region: this._cell(r, I.region),
+          branch: this._cell(r, I.branch),
+          code: this.normalizePlannerCode(this._cell(r, I.code)),
+          name: this._cell(r, I.name),
+          careerMonth: this._toNumber(this._cell(r, I.careerMonth)),
+          months: {
+            7: {
+              target,
+              actual: this._toNumber(this._cell(r, I.julActual)) || 0,
+              shortfall: this._toNumber(this._cell(r, I.julShortfall)),
+              award: this._toNumber(this._cell(r, I.julAward)) || 0,
+              flag: this._toNumber(this._cell(r, I.julFlag)),
+            },
+            8: {
+              target,
+              actual: this._toNumber(this._cell(r, I.augActual)) || 0,
+              shortfall: this._toNumber(this._cell(r, I.augShortfall)),
+              award: this._toNumber(this._cell(r, I.augAward)) || 0,
+              flag: this._toNumber(this._cell(r, I.augFlag)),
+            },
+            9: {
+              target,
+              actual: this._toNumber(this._cell(r, I.sepActual)) || 0,
+              shortfall: this._toNumber(this._cell(r, I.sepShortfall)),
+              award: this._toNumber(this._cell(r, I.sepAward)) || 0,
+              flag: this._toNumber(this._cell(r, I.sepFlag)),
+            },
           },
-          8: {
-            target: this._toNumber(this._cell(r, I.augTarget)),
-            actual: this._toNumber(this._cell(r, I.augActual)),
-            shortfall: this._toNumber(this._cell(r, I.augShortfall)),
-            award: this._toNumber(this._cell(r, I.augAward)) || 0,
-            status: this._cell(r, I.augStatus),
-            flag: this._toNumber(this._cell(r, I.augFlag)),
-          },
-          9: {
-            target: this._toNumber(this._cell(r, I.sepTarget)),
-            actual: this._toNumber(this._cell(r, I.sepActual)),
-            shortfall: this._toNumber(this._cell(r, I.sepShortfall)),
-            award: this._toNumber(this._cell(r, I.sepAward)) || 0,
-            status: this._cell(r, I.sepStatus),
-            flag: this._toNumber(this._cell(r, I.sepFlag)),
-          },
-        },
-        currentTotal: this._toNumber(this._cell(r, I.currentTotal)) || 0,
-        sep200PreviewFromSheet: this._toNumber(this._cell(r, I.sep200Preview)),
-      }))
+        };
+      })
       .filter((r) => r.code);
   },
 
@@ -88,8 +85,6 @@ const dataLoader = {
         code: this.normalizePlannerCode(this._cell(r, I.code)),
         name: this._cell(r, I.name),
         careerMonth: this._toNumber(this._cell(r, I.careerMonth)),
-        q1Grade: this._cell(r, I.q1Grade),
-        q2Grade: this._cell(r, I.q2Grade),
         monthlyPerformance: {
           7: this._toNumber(this._cell(r, I.jul)) || 0,
           8: this._toNumber(this._cell(r, I.aug)) || 0,
@@ -105,20 +100,23 @@ const dataLoader = {
   _parseTCStepUp(rows) {
     const I = CONFIG.INDEX.tcStepUp;
     return rows.slice(CONFIG.DATA_START_ROWS.tcStepUp)
-      .map((r) => ({
-        region: this._cell(r, I.region),
-        branch: this._cell(r, I.branch),
-        code: this.normalizePlannerCode(this._cell(r, I.code)),
-        name: this._cell(r, I.name),
-        careerMonth: this._toNumber(this._cell(r, I.careerMonth)),
-        lifeInsurance: this._toNumber(this._cell(r, I.lifeInsurance)) || 0,
-        autoPerformance: this._toNumber(this._cell(r, I.autoPerformance)) || 0,
-        conversionPerformance: this._toNumber(this._cell(r, I.conversionPerformance)) || 0,
-        incomeProgress: this._toNumber(this._cell(r, I.incomeProgress)) || 0,
-        awardAmount: this._toNumber(this._cell(r, I.awardAmount)) || 0,
-        prevMonthNote: this._cell(r, I.prevMonthNote),
-        status: String(this._cell(r, I.status) || "").trim(),
-      }))
+      .map((r) => {
+        const earlyNote = String(this._cell(r, I.earlyNote) || "").trim();
+        return {
+          region: this._cell(r, I.region),
+          branch: this._cell(r, I.branch),
+          code: this.normalizePlannerCode(this._cell(r, I.code)),
+          name: this._cell(r, I.name),
+          careerMonth: this._toNumber(this._cell(r, I.careerMonth)),
+          lifeInsurance: this._toNumber(this._cell(r, I.lifeInsurance)) || 0,
+          autoPerformance: this._toNumber(this._cell(r, I.autoPerformance)) || 0,
+          conversionPerformance: this._toNumber(this._cell(r, I.conversionPerformance)) || 0,
+          incomeProgress: this._toNumber(this._cell(r, I.incomeProgress)) || 0,
+          awardAmount: this._toNumber(this._cell(r, I.awardAmount)) || 0,
+          prevMonthNote: earlyNote,
+          status: earlyNote ? CONFIG.AWARD_RULES.tcStepUp.earlyText : CONFIG.AWARD_RULES.tcStepUp.maintainText,
+        };
+      })
       .filter((r) => r.code);
   },
 
