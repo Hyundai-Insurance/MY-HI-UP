@@ -752,3 +752,196 @@ button {
 .honors-history .stat-box-value {
   font-size: 16px;
 }
+
+/* ==========================================================
+   2026-09-07 개인환산 9월 예상 영역 — 모바일 표시 보정
+   ========================================================== */
+.pi-motivation-wrap {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #F7F9FD;
+  border: 1px solid var(--color-border);
+}
+
+.pi-forecast-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+}
+
+.pi-forecast-box {
+  min-width: 0;
+  padding: 14px 10px 12px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  border: 1px solid #DDE5F1;
+  text-align: center;
+}
+
+.pi-forecast-box.is-september {
+  background: #FFF9ED;
+  border-color: #E9D7AD;
+}
+
+.pi-forecast-icon {
+  font-size: 24px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.pi-forecast-icon-blue {
+  filter: hue-rotate(175deg) saturate(1.15);
+}
+
+.pi-forecast-label {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  line-height: 1.35;
+  font-weight: 800;
+  color: var(--color-text-sub);
+  word-break: keep-all;
+}
+
+.pi-forecast-value {
+  margin-top: 6px;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 900;
+  color: var(--color-navy-900);
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.pi-forecast-box.is-september .pi-forecast-value {
+  color: var(--color-gold-deep);
+}
+
+.pi-forecast-sub {
+  margin-top: 6px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: #7A8492;
+  word-break: keep-all;
+}
+
+.pi-forecast-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-navy-700);
+}
+
+.pi-more-reward {
+  margin-top: 13px;
+  padding: 13px 12px;
+  border-radius: 12px;
+  background: #EAF1FF;
+  text-align: center;
+}
+
+.pi-more-reward-main {
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  word-break: keep-all;
+}
+
+.pi-more-reward-main strong {
+  font-weight: 900;
+  color: var(--color-navy-700);
+  white-space: nowrap;
+}
+
+.pi-more-reward-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--color-text-sub);
+  word-break: keep-all;
+}
+
+.pi-september-detail {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #DDE5F1;
+}
+
+.pi-september-detail span {
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--color-text-sub);
+}
+
+.pi-september-detail strong {
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 900;
+  color: var(--color-navy-900);
+  white-space: nowrap;
+}
+
+.pi-september-detail small {
+  grid-column: 1 / -1;
+  display: block;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #8A6A2F;
+  text-align: right;
+}
+
+.pi-forecast-note {
+  margin: 10px 2px 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #7A8492;
+  text-align: center;
+  word-break: keep-all;
+}
+
+@media (max-width: 380px) {
+  .pi-motivation-wrap {
+    padding: 13px 10px;
+  }
+
+  .pi-forecast-grid {
+    grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .pi-forecast-box {
+    padding: 12px 6px 10px;
+  }
+
+  .pi-forecast-label {
+    font-size: 11.5px;
+  }
+
+  .pi-forecast-value {
+    font-size: 17px;
+  }
+
+  .pi-forecast-sub {
+    font-size: 10.5px;
+  }
+
+  .pi-forecast-arrow {
+    font-size: 20px;
+  }
+
+  .pi-more-reward-main {
+    font-size: 14px;
+  }
+}
