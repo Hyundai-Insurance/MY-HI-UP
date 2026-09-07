@@ -1,14 +1,8 @@
 const app = {
   async init() {
+    // 첫 화면에서는 무거운 백데이터를 읽지 않습니다.
     uiRenderer.renderLogin();
     this._bindEvents();
-    uiRenderer.renderLoading();
-    try {
-      await dataLoader.loadExcelFiles();
-      uiRenderer.renderLogin();
-    } catch (err) {
-      this._handleLoadError(err);
-    }
   },
 
   _bindEvents() {
@@ -41,14 +35,13 @@ const app = {
       return;
     }
 
-    if (!dataLoader._cache.personalIncrease) {
-      uiRenderer.renderLoading();
-      try {
-        await dataLoader.loadExcelFiles();
-      } catch (err) {
-        this._handleLoadError(err);
-        return;
-      }
+    // 입력한 사번에 필요한 작은 JSON 조각만 불러옵니다.
+    uiRenderer.renderLoading();
+    try {
+      await dataLoader.loadPlannerData(rawInput);
+    } catch (err) {
+      this._handleLoadError(err);
+      return;
     }
 
     if (!dataLoader.isCodeRegistered(rawInput)) {
@@ -96,10 +89,8 @@ const app = {
     const message = String(err && err.message ? err.message : err);
     let detail = message;
 
-    if (message.startsWith("FILE_NOT_FOUND:")) {
-      detail = `${CONFIG.DATA_FILE} 파일을 찾을 수 없습니다. data 폴더와 파일명을 확인하세요.`;
-    } else if (message.startsWith("SHEET_NOT_FOUND:")) {
-      detail = `통합 백데이터의 시트명을 확인하세요. (${message})`;
+    if (message.startsWith("DATA_LOAD_FAILED:")) {
+      detail = "웹용 데이터 파일을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.";
     }
 
     uiRenderer.renderError("load_fail", detail);

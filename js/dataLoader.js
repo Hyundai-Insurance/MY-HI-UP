@@ -1,9 +1,10 @@
 const dataLoader = {
   _cache: {
-    personalIncrease: null,
-    honors: null,
-    tcStepUp: null,
+    personalIncrease: [],
+    honors: [],
+    tcStepUp: [],
   },
+  _plannerCache: new Map(),
 
   normalizePlannerCode(rawCode) {
     if (rawCode === null || rawCode === undefined) return "";
@@ -12,138 +13,69 @@ const dataLoader = {
     return /^\d+$/.test(str) ? str.padStart(6, "0") : str;
   },
 
-  _toNumber(value) {
-    if (value === null || value === undefined || value === "") return null;
-    const n = Number(value);
-    return Number.isFinite(n) ? n : null;
+  _prefixForCode(code) {
+    return this.normalizePlannerCode(code).slice(0, CONFIG.DATA_SHARD_PREFIX_LENGTH);
   },
 
-  _cell(row, idx) {
-    return row && row[idx] !== undefined ? row[idx] : null;
+  async loadPlannerData(code) {
+    const normalized = this.normalizePlannerCode(code);
+    if (!normalized) return null;
+
+    if (this._plannerCache.has(normalized)) {
+      return this._plannerCache.get(normalized);
+    }
+
+    const prefix = this._prefixForCode(normalized);
+    const url = `${CONFIG.DATA_SHARD_DIR}/${encodeURIComponent(prefix)}.json`;
+
+    let response;
+    try {
+      // no-cache: 매번 전체 파일을 다시 받지 않고, 변경 여부만 확인해 최신 데이터 유지
+      response = await fetch(url, { cache: "no-cache" });
+    } catch (err) {
+      throw new Error(`DATA_LOAD_FAILED:${url}`);
+    }
+
+    // 해당 prefix 파일 자체가 없으면 미등록 코드
+    if (response.status === 404) {
+      this._plannerCache.set(normalized, null);
+      return null;
+    }
+    if (!response.ok) {
+      throw new Error(`DATA_LOAD_FAILED:${url}`);
+    }
+
+    const shard = await response.json();
+    const planner = shard[normalized] || null;
+    this._plannerCache.set(normalized, planner);
+
+    // 기존 렌더러/계산기 인터페이스를 그대로 유지하기 위한 1인 캐시
+    this._cache.personalIncrease = planner?.personalIncrease ? [planner.personalIncrease] : [];
+    this._cache.honors = planner?.honors ? [planner.honors] : [];
+    this._cache.tcStepUp = planner?.tcStepUp ? [planner.tcStepUp] : [];
+
+    return planner;
   },
 
-  async _loadWorkbook() {
-    const bustUrl = `${CONFIG.DATA_FILE}?t=${Date.now()}`;
-    const response = await fetch(bustUrl, { cache: "no-store" });
-    if (!response.ok) throw new Error(`FILE_NOT_FOUND:${CONFIG.DATA_FILE}`);
-    const arrayBuffer = await response.arrayBuffer();
-    return await xlsxLite.readWorkbook(arrayBuffer);
-  },
-
-  _getRows(workbook, sheetName) {
-    const rows = workbook.sheets[sheetName];
-    if (!rows) throw new Error(`SHEET_NOT_FOUND:${sheetName}`);
-    return rows;
-  },
-
-  _parsePersonalIncrease(rows) {
-    const I = CONFIG.INDEX.personalIncrease;
-    return rows.slice(CONFIG.DATA_START_ROWS.personalIncrease)
-      .map((r) => {
-        const target = this._toNumber(this._cell(r, I.commonTarget)) || 0;
-        return {
-          region: this._cell(r, I.region),
-          branch: this._cell(r, I.branch),
-          code: this.normalizePlannerCode(this._cell(r, I.code)),
-          name: this._cell(r, I.name),
-          careerMonth: this._toNumber(this._cell(r, I.careerMonth)),
-          months: {
-            7: {
-              target,
-              actual: this._toNumber(this._cell(r, I.julActual)) || 0,
-              shortfall: this._toNumber(this._cell(r, I.julShortfall)),
-              award: this._toNumber(this._cell(r, I.julAward)) || 0,
-              flag: this._toNumber(this._cell(r, I.julFlag)),
-            },
-            8: {
-              target,
-              actual: this._toNumber(this._cell(r, I.augActual)) || 0,
-              shortfall: this._toNumber(this._cell(r, I.augShortfall)),
-              award: this._toNumber(this._cell(r, I.augAward)) || 0,
-              flag: this._toNumber(this._cell(r, I.augFlag)),
-            },
-            9: {
-              target,
-              actual: this._toNumber(this._cell(r, I.sepActual)) || 0,
-              shortfall: this._toNumber(this._cell(r, I.sepShortfall)),
-              award: this._toNumber(this._cell(r, I.sepAward)) || 0,
-              flag: this._toNumber(this._cell(r, I.sepFlag)),
-            },
-          },
-        };
-      })
-      .filter((r) => r.code);
-  },
-
-  _parseHonors(rows) {
-    const I = CONFIG.INDEX.honors;
-    return rows.slice(CONFIG.DATA_START_ROWS.honors)
-      .map((r) => ({
-        region: this._cell(r, I.region),
-        branch: this._cell(r, I.branch),
-        team: this._cell(r, I.team),
-        code: this.normalizePlannerCode(this._cell(r, I.code)),
-        name: this._cell(r, I.name),
-        careerMonth: this._toNumber(this._cell(r, I.careerMonth)),
-        monthlyPerformance: {
-          7: this._toNumber(this._cell(r, I.jul)) || 0,
-          8: this._toNumber(this._cell(r, I.aug)) || 0,
-          9: this._toNumber(this._cell(r, I.sep)) || 0,
-        },
-        averagePerformance: this._toNumber(this._cell(r, I.average)) || 0,
-        grade: this._cell(r, I.grade) || "-",
-        awardAmount: this._toNumber(this._cell(r, I.award)) || 0,
-      }))
-      .filter((r) => r.code);
-  },
-
-  _parseTCStepUp(rows) {
-    const I = CONFIG.INDEX.tcStepUp;
-    return rows.slice(CONFIG.DATA_START_ROWS.tcStepUp)
-      .map((r) => {
-        const earlyNote = String(this._cell(r, I.earlyNote) || "").trim();
-        return {
-          region: this._cell(r, I.region),
-          branch: this._cell(r, I.branch),
-          code: this.normalizePlannerCode(this._cell(r, I.code)),
-          name: this._cell(r, I.name),
-          careerMonth: this._toNumber(this._cell(r, I.careerMonth)),
-          lifeInsurance: this._toNumber(this._cell(r, I.lifeInsurance)) || 0,
-          autoPerformance: this._toNumber(this._cell(r, I.autoPerformance)) || 0,
-          conversionPerformance: this._toNumber(this._cell(r, I.conversionPerformance)) || 0,
-          incomeProgress: this._toNumber(this._cell(r, I.incomeProgress)) || 0,
-          awardAmount: this._toNumber(this._cell(r, I.awardAmount)) || 0,
-          prevMonthNote: earlyNote,
-          status: earlyNote ? CONFIG.AWARD_RULES.tcStepUp.earlyText : CONFIG.AWARD_RULES.tcStepUp.maintainText,
-        };
-      })
-      .filter((r) => r.code);
-  },
-
+  // 기존 코드와의 호환용. 이제 엑셀 전체를 미리 읽지 않는다.
   async loadExcelFiles() {
-    const workbook = await this._loadWorkbook();
-    const S = CONFIG.SHEET_NAMES;
-
-    this._cache.personalIncrease = this._parsePersonalIncrease(this._getRows(workbook, S.personalIncrease));
-    this._cache.honors = this._parseHonors(this._getRows(workbook, S.honors));
-    this._cache.tcStepUp = this._parseTCStepUp(this._getRows(workbook, S.tcStepUp));
-
     return this._cache;
   },
 
   isCodeRegistered(code) {
     const normalized = this.normalizePlannerCode(code);
-    return this._cache.personalIncrease.some((r) => r.code === normalized) ||
-           this._cache.honors.some((r) => r.code === normalized);
+    const planner = this._plannerCache.get(normalized);
+    return !!(planner && (planner.personalIncrease || planner.honors));
   },
 
   findPlannerData(code) {
     const normalized = this.normalizePlannerCode(code);
-    return {
+    const planner = this._plannerCache.get(normalized);
+    return planner || {
       code: normalized,
-      personalIncrease: this._cache.personalIncrease.find((r) => r.code === normalized) || null,
-      honors: this._cache.honors.find((r) => r.code === normalized) || null,
-      tcStepUp: this._cache.tcStepUp.find((r) => r.code === normalized) || null,
+      personalIncrease: null,
+      honors: null,
+      tcStepUp: null,
     };
   },
 };
