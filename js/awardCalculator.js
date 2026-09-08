@@ -1,4 +1,21 @@
 const awardCalculator = {
+  _getNormalSeptemberAward(piRow) {
+    const sep = piRow?.months?.[9] || {};
+    const explicitAward = Number(sep.award) || 0;
+    if (explicitAward > 0) return explicitAward;
+
+    // 9월 미달성자는 백데이터 시상금이 0원이므로,
+    // "목표를 딱 달성한다"고 가정한 정상(100%) 시상금을 목표금액 기준으로 계산한다.
+    // 기존 7·8월 백데이터의 정상 시상 구간과 동일:
+    // 40만 이상 5만 / 60만 이상 7만 / 80만 이상 10만 / 100만 이상 15만.
+    const target = Number(sep.target) || 0;
+    if (target >= 1000000) return 150000;
+    if (target >= 800000) return 100000;
+    if (target >= 600000) return 70000;
+    if (target >= 400000) return 50000;
+    return 0;
+  },
+
   calculatePersonalIncreaseAward(piRow, month) {
     if (!piRow) {
       return {
@@ -6,6 +23,7 @@ const awardCalculator = {
         achieved: false, awardAmount: 0,
         currentSecuredAmount: 0, septemberExpectedAmount: 0,
         totalAwardAmount: 0, showSeptemberForecast: false,
+        septemberMultiplier: 1, forecastNote: "",
         monthStatuses: {}, monthAwards: {}
       };
     }
@@ -22,33 +40,44 @@ const awardCalculator = {
 
     const julAward = julAchieved ? (Number(jul.award) || 0) : 0;
     const augAward = augAchieved ? (Number(aug.award) || 0) : 0;
-    const sepBaseAward = sepAchieved ? (Number(sep.award) || 0) : 0;
+    const sepActualAward = sepAchieved ? (Number(sep.award) || 0) : 0;
     const currentSecuredAmount = julAward + augAward;
 
-    // 7·8월 모두 달성한 사람만 9월 달성 예상 영역을 노출한다.
-    // 9월 미달성: 8월 시상금 × 200%를 9월 달성 예상금액으로 표시
-    // 9월 실제 달성: 실제 9월 시상금 × 200% 적용
     const multiplier = CONFIG.AWARD_RULES.personalIncrease.september200Multiplier || 2;
+    const normalSeptemberAward = this._getNormalSeptemberAward(piRow);
+
+    // 모든 개인환산 대상자에게 "9월 달성 시" 예상 영역을 보여준다.
+    // ① 7·8월 모두 달성: 기존 정책 유지 → 미달성 시 8월 시상금 × 200%,
+    //    실제 9월 달성 시 실제 9월 시상금 × 200%.
+    // ② 7·8월 중 1회 달성 또는 모두 미달성: 9월 정상 시상금 100% 적용.
     let septemberExpectedAmount = 0;
-    let septemberIncludedAmount = sepBaseAward;
+    let septemberMultiplier = 1;
 
     if (consecutiveEligible) {
+      septemberMultiplier = multiplier;
       septemberExpectedAmount = sepAchieved
-        ? sepBaseAward * multiplier
+        ? sepActualAward * multiplier
         : augAward * multiplier;
-      septemberIncludedAmount = septemberExpectedAmount;
+    } else {
+      septemberExpectedAmount = sepAchieved
+        ? sepActualAward
+        : normalSeptemberAward;
     }
+
+    const totalAwardAmount = currentSecuredAmount + septemberExpectedAmount;
 
     const monthAwards = {
       7: julAward,
       8: augAward,
-      // 위 월별 현황은 현재 달성 상태만 표시한다. 미달성이면 0원.
+      // 월별 현황 카드는 실제 달성 상태만 표시한다. 미달성이면 0원.
       9: sepAchieved
-        ? (consecutiveEligible ? sepBaseAward * multiplier : sepBaseAward)
+        ? (consecutiveEligible ? sepActualAward * multiplier : sepActualAward)
         : 0,
     };
 
-    const totalAwardAmount = currentSecuredAmount + septemberIncludedAmount;
+    const forecastNote = consecutiveEligible
+      ? "7·8월 연속 달성 기준, 9월 달성 시 200%를 적용한 예상 금액입니다."
+      : "7·8월 달성 여부와 관계없이, 9월 목표 달성 시 정상 시상금(100%)을 반영한 예상 금액입니다.";
 
     return {
       month,
@@ -62,8 +91,9 @@ const awardCalculator = {
       currentSecuredAmount,
       septemberExpectedAmount,
       totalAwardAmount,
-      showSeptemberForecast: consecutiveEligible,
-      forecastNote: "7·8월 연속 달성자 기준, 9월 달성을 가정한 예상 금액입니다.",
+      showSeptemberForecast: true,
+      septemberMultiplier,
+      forecastNote,
       monthStatuses: {
         7: julAchieved ? "달성" : "미달성",
         8: augAchieved ? "달성" : "미달성",

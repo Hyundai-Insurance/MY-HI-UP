@@ -90,7 +90,8 @@ const uiRenderer = {
     setText("pi-september-award", this.formatWon(result.septemberExpectedAmount));
     setText("pi-final-award", this.formatWon(result.totalAwardAmount));
     setText("pi-additional-award", this.formatWon(result.septemberExpectedAmount));
-    setText("pi-forecast-note", result.forecastNote || "7·8월 달성자 기준, 9월에도 달성한다고 가정한 예상 금액입니다.");
+    setText("pi-forecast-note", result.forecastNote || "9월 목표 달성 시 받을 수 있는 예상 금액입니다.");
+    setText("pi-september-rule", result.septemberMultiplier === 2 ? "9월 시상금 × 200% 적용" : "9월 시상금 100% 적용");
     setText("pi-award", this.formatWon(result.totalAwardAmount));
 
     const motivationWrap = this.el("pi-motivation-wrap");
