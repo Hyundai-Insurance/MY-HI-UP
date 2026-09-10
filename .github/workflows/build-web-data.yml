@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - "data/MY_HI_UP_DATA.xlsx"
-      - "tools/build_planner_json.py"
   workflow_dispatch:
 
 permissions:
