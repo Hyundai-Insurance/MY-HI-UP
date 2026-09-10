@@ -15,7 +15,7 @@
 <title>MY HI-UP · 나의 실적과 시상 현황</title>
 <meta name="description" content="플래너 코드로 개인환산순증, 매출아너스, TC스텝업 시상 현황을 한눈에 확인하세요." />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
-<link rel="stylesheet" href="style.css?v=20260907b" />
+<link rel="stylesheet" href="style.css?v=20260910c" />
 </head>
 <body>
 <div class="app-shell">
@@ -38,7 +38,7 @@
       <div id="login-error" class="login-error-box hidden"></div>
       <button id="submit-btn" class="primary-btn">조회하기</button>
     </div>
-    <p class="login-foot-note">본 서비스는 소속 플래너 본인의 조회를 위한 것입니다.<br />데이터는 매일 오전 10시 최신 정보로 업데이트됩니다.</p>
+    <p class="login-foot-note">본 서비스는 소속 플래너 본인의 조회를 위한 것입니다.<br />데이터는 매일 오전 최신 정보로 업데이트됩니다.</p>
   </div>
 
   <div id="screen-error" class="screen center-screen hidden">
@@ -127,13 +127,34 @@
       <div class="award-card">
         <div class="award-card-title"><h2>매출아너스</h2></div>
         <hr class="divider-line" />
-        <div class="honors-summary">
-          <div class="stat-box"><div class="stat-box-label">평균실적</div><div id="honors-average" class="stat-box-value">-</div></div>
-          <div class="stat-box"><div class="stat-box-label">달성 등급</div><div id="honors-grade" class="stat-box-value">-</div></div>
-        </div>
         <div id="honors-monthly-wrap" class="honors-monthly-wrap"></div>
+        <div class="honors-summary">
+          <div class="stat-box"><div class="stat-box-label">현재 평균실적</div><div id="honors-average" class="stat-box-value">-</div></div>
+          <div class="stat-box"><div class="stat-box-label">현재 달성 등급</div><div id="honors-grade" class="stat-box-value">-</div></div>
+        </div>
         <div id="honors-note" class="honors-note"></div>
-        <div class="award-highlight"><div class="award-highlight-label">예상 시상금</div><div id="honors-award" class="award-highlight-value">-</div></div>
+        <div id="honors-forecast" class="honors-forecast">
+          <div class="pi-forecast-grid">
+            <div class="pi-forecast-box">
+              <div class="pi-forecast-icon">🏆</div>
+              <div class="pi-forecast-label">현재까지 확보한 시상금</div>
+              <div id="honors-current-award" class="pi-forecast-value">-</div>
+              <div id="honors-current-grade" class="pi-forecast-sub">-</div>
+            </div>
+            <div class="pi-forecast-arrow">→</div>
+            <div class="pi-forecast-box is-september">
+              <div class="pi-forecast-icon">🏆</div>
+              <div class="pi-forecast-label">다음 등급 달성하면</div>
+              <div id="honors-next-award" class="pi-forecast-value">-</div>
+              <div id="honors-next-grade" class="pi-forecast-sub">-</div>
+            </div>
+          </div>
+          <div id="honors-next-actions" class="honors-next-actions">
+            <div class="honors-action-box is-needed"><div class="honors-action-label">🎯 9월 실적</div><div id="honors-needed" class="honors-action-value">-</div><div class="honors-action-sub">더 하면 다음 등급 달성!</div></div>
+            <div class="honors-action-box is-reward"><div class="honors-action-label">🎉 지금보다</div><div id="honors-more-reward" class="honors-action-value">-</div><div class="honors-action-sub">더 받을 수 있어요!</div></div>
+          </div>
+          <div id="honors-top-tier" class="honors-top-tier hidden">🏆 최고 등급 서밋을 달성했어요!</div>
+        </div>
       </div>
     </section>
 
@@ -157,10 +178,10 @@
 </div>
 <script src="js/xlsxLite.js?v=20260907a"></script>
 <script src="js/config.js?v=20260907c"></script>
-<script src="js/dateHelper.js?v=20260910a"></script>
-<script src="js/dataLoader.js?v=20260910a"></script>
-<script src="js/awardCalculator.js?v=20260908a"></script>
-<script src="js/uiRenderer.js?v=20260910a"></script>
-<script src="app.js?v=20260910a"></script>
+<script src="js/dateHelper.js?v=20260907a"></script>
+<script src="js/dataLoader.js?v=20260907c"></script>
+<script src="js/awardCalculator.js?v=20260910c"></script>
+<script src="js/uiRenderer.js?v=20260910c"></script>
+<script src="app.js?v=20260907c"></script>
 </body>
 </html>

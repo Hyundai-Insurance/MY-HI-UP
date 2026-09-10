@@ -104,15 +104,46 @@ const awardCalculator = {
   },
 
   getHonorsResult(honorsRow) {
+    const tiers = [
+      { grade: "프라임Ⅰ", threshold: 500000, award: 300000 },
+      { grade: "프라임Ⅱ", threshold: 700000, award: 500000 },
+      { grade: "프레스티지Ⅰ", threshold: 1000000, award: 700000 },
+      { grade: "프레스티지Ⅱ", threshold: 1500000, award: 1000000 },
+      { grade: "마스터Ⅰ", threshold: 2000000, award: 1500000 },
+      { grade: "마스터Ⅱ", threshold: 3000000, award: 2500000 },
+      { grade: "마스터Ⅲ", threshold: 4000000, award: 4000000 },
+      { grade: "서밋", threshold: 5000000, award: 5000000 },
+    ];
+
     if (!honorsRow) {
       return {
-        monthlyPerformance: { 7: 0, 8: 0, 9: 0 },
-        averagePerformance: 0,
-        grade: "-",
-        awardAmount: 0,
+        monthlyPerformance: { 7: 0, 8: 0, 9: 0 }, averagePerformance: 0,
+        grade: "-", awardAmount: 0, nextGrade: "프라임Ⅰ", nextAwardAmount: 300000,
+        additionalPerformanceNeeded: 1500000, additionalRewardAmount: 300000, isTopTier: false,
       };
     }
-    return honorsRow;
+
+    const monthlyPerformance = honorsRow.monthlyPerformance || { 7: 0, 8: 0, 9: 0 };
+    const totalPerformance = [7, 8, 9].reduce((sum, m) => sum + (Number(monthlyPerformance[m]) || 0), 0);
+    const averagePerformance = totalPerformance / 3;
+    let currentTier = null;
+    tiers.forEach((tier) => { if (averagePerformance >= tier.threshold) currentTier = tier; });
+    const currentIndex = currentTier ? tiers.indexOf(currentTier) : -1;
+    const nextTier = tiers[currentIndex + 1] || null;
+
+    return {
+      ...honorsRow,
+      monthlyPerformance,
+      averagePerformance,
+      grade: currentTier?.grade || "미달성",
+      awardAmount: currentTier?.award || 0,
+      nextGrade: nextTier?.grade || null,
+      nextAwardAmount: nextTier?.award || 0,
+      nextAverageThreshold: nextTier?.threshold || null,
+      additionalPerformanceNeeded: nextTier ? Math.max((nextTier.threshold * 3) - totalPerformance, 0) : 0,
+      additionalRewardAmount: nextTier ? Math.max(nextTier.award - (currentTier?.award || 0), 0) : 0,
+      isTopTier: !nextTier && !!currentTier,
+    };
   },
 
   getTCStepUpResult(tcRow) {

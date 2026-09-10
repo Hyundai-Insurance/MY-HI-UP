@@ -43,7 +43,7 @@ const uiRenderer = {
 
   renderGuideHeader() {
     this.el("guide-title").textContent = "3분기 HI-UP";
-    this.el("guide-closing").textContent = dateHelper.getClosingDateLabel(dataLoader.getClosingDate());
+    this.el("guide-closing").textContent = dateHelper.getClosingDateLabel();
   },
 
   renderPlannerProfile(plannerData) {
@@ -132,7 +132,8 @@ const uiRenderer = {
   renderHonors(result, highlightMonth) {
     this.el("honors-grade").textContent = result.grade || "-";
     this.el("honors-average").textContent = this.formatWon(result.averagePerformance || 0);
-    this.el("honors-award").textContent = this.formatWon(result.awardAmount || 0);
+    this.el("honors-current-award").textContent = this.formatWon(result.awardAmount || 0);
+    this.el("honors-current-grade").textContent = result.awardAmount > 0 ? `${result.grade} 확보` : "아직 달성한 등급이 없어요";
 
     const wrap = this.el("honors-monthly-wrap");
     wrap.innerHTML = "";
@@ -147,9 +148,28 @@ const uiRenderer = {
       wrap.appendChild(card);
     });
 
-    this.el("honors-note").textContent = (result.monthlyPerformance?.[9] || 0) === 0
-      ? "9월 실적 데이터 준비중 · 평균실적/등급/시상금은 백데이터의 현재 계산값을 표시합니다."
-      : "";
+    const actions = this.el("honors-next-actions");
+    const topTier = this.el("honors-top-tier");
+    const nextBox = this.el("honors-next-award")?.closest(".pi-forecast-box");
+    const arrow = nextBox?.previousElementSibling;
+
+    if (result.isTopTier) {
+      if (nextBox) nextBox.classList.add("hidden");
+      if (arrow) arrow.classList.add("hidden");
+      actions.classList.add("hidden");
+      topTier.classList.remove("hidden");
+    } else {
+      if (nextBox) nextBox.classList.remove("hidden");
+      if (arrow) arrow.classList.remove("hidden");
+      actions.classList.remove("hidden");
+      topTier.classList.add("hidden");
+      this.el("honors-next-award").textContent = this.formatWon(result.nextAwardAmount || 0);
+      this.el("honors-next-grade").textContent = `${result.nextGrade} · 평균 ${this.formatWon(result.nextAverageThreshold || 0)} 달성`;
+      this.el("honors-needed").textContent = this.formatWon(result.additionalPerformanceNeeded || 0);
+      this.el("honors-more-reward").textContent = this.formatWon(result.additionalRewardAmount || 0);
+    }
+
+    this.el("honors-note").textContent = "";
   },
 
   renderTCStepUp(tcResult) {
