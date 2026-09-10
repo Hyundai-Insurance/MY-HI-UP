@@ -955,28 +955,62 @@ button {
   border: 1px solid var(--color-border);
 }
 .honors-next-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
   margin-top: 13px;
 }
 .honors-action-box {
   min-width: 0;
-  padding: 14px 10px 13px;
+  padding: 13px 12px;
   border-radius: 12px;
   text-align: center;
   border: 1px solid #DDE5F1;
 }
 .honors-action-box.is-needed { background: #EAF1FF; }
 .honors-action-box.is-reward { background: #FFF3F6; border-color: #F3DCE4; }
-.honors-action-label { font-size: 12.5px; font-weight: 800; color: var(--color-text-sub); }
-.honors-action-value { margin-top: 5px; font-size: 21px; line-height: 1.2; font-weight: 900; letter-spacing: -0.03em; white-space: nowrap; }
-.honors-action-box.is-needed .honors-action-value { color: var(--color-navy-700); }
-.honors-action-box.is-reward .honors-action-value { color: #D94B70; }
-.honors-action-sub { margin-top: 5px; font-size: 11.5px; line-height: 1.4; color: var(--color-text-sub); font-weight: 700; word-break: keep-all; }
+.honors-action-label {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--color-text-sub);
+  margin-bottom: 4px;
+}
+.honors-action-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  line-height: 1.25;
+  word-break: keep-all;
+}
+.honors-action-value {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+.honors-action-suffix {
+  margin-left: 4px;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.honors-action-box.is-needed .honors-action-value,
+.honors-action-box.is-needed .honors-action-suffix { color: var(--color-navy-700); }
+.honors-action-box.is-reward .honors-action-value,
+.honors-action-box.is-reward .honors-action-suffix { color: #D94B70; }
+.honors-action-sub {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-text-sub);
+  font-weight: 700;
+  word-break: keep-all;
+}
 .honors-top-tier { margin-top: 13px; padding: 15px 12px; border-radius: 12px; background: #FFF9ED; border: 1px solid #E9D7AD; text-align: center; font-size: 15px; font-weight: 900; color: var(--color-gold-deep); }
 @media (max-width: 380px) {
-  .honors-next-actions { gap: 8px; }
-  .honors-action-value { font-size: 18px; }
+  .honors-action-value { font-size: 20px; }
+  .honors-action-suffix { font-size: 14px; }
   .honors-action-label { font-size: 12px; }
 }
+

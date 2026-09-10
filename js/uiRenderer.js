@@ -166,6 +166,8 @@ const uiRenderer = {
       this.el("honors-next-award").textContent = this.formatWon(result.nextAwardAmount || 0);
       this.el("honors-next-grade").textContent = `${result.nextGrade} · 평균 ${this.formatWon(result.nextAverageThreshold || 0)} 달성`;
       this.el("honors-needed").textContent = this.formatWon(result.additionalPerformanceNeeded || 0);
+      const nextStepText = this.el("honors-next-step-text");
+      if (nextStepText) nextStepText.textContent = `${result.nextGrade} 달성이 가능해요!`;
       this.el("honors-more-reward").textContent = this.formatWon(result.additionalRewardAmount || 0);
     }
 

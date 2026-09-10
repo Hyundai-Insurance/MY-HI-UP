@@ -15,7 +15,7 @@
 <title>MY HI-UP · 나의 실적과 시상 현황</title>
 <meta name="description" content="플래너 코드로 개인환산순증, 매출아너스, TC스텝업 시상 현황을 한눈에 확인하세요." />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
-<link rel="stylesheet" href="style.css?v=20260910c" />
+<link rel="stylesheet" href="style.css?v=20260910d" />
 </head>
 <body>
 <div class="app-shell">
@@ -150,8 +150,15 @@
             </div>
           </div>
           <div id="honors-next-actions" class="honors-next-actions">
-            <div class="honors-action-box is-needed"><div class="honors-action-label">🎯 9월 실적</div><div id="honors-needed" class="honors-action-value">-</div><div class="honors-action-sub">더 하면 다음 등급 달성!</div></div>
-            <div class="honors-action-box is-reward"><div class="honors-action-label">🎉 지금보다</div><div id="honors-more-reward" class="honors-action-value">-</div><div class="honors-action-sub">더 받을 수 있어요!</div></div>
+            <div class="honors-action-box is-needed">
+              <div class="honors-action-label">🎯 9월 실적</div>
+              <div class="honors-action-main"><span id="honors-needed" class="honors-action-value">-</span><span class="honors-action-suffix"> 더 하면!</span></div>
+              <div id="honors-next-step-text" class="honors-action-sub">다음 등급 달성이 가능해요!</div>
+            </div>
+            <div class="honors-action-box is-reward">
+              <div class="honors-action-label">🎉 지금보다</div>
+              <div class="honors-action-main"><span id="honors-more-reward" class="honors-action-value">-</span><span class="honors-action-suffix"> 더 받을 수 있어요!</span></div>
+            </div>
           </div>
           <div id="honors-top-tier" class="honors-top-tier hidden">🏆 최고 등급 서밋을 달성했어요!</div>
         </div>
@@ -181,7 +188,7 @@
 <script src="js/dateHelper.js?v=20260907a"></script>
 <script src="js/dataLoader.js?v=20260907c"></script>
 <script src="js/awardCalculator.js?v=20260910c"></script>
-<script src="js/uiRenderer.js?v=20260910c"></script>
+<script src="js/uiRenderer.js?v=20260910d"></script>
 <script src="app.js?v=20260907c"></script>
 </body>
 </html>
