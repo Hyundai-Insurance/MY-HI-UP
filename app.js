@@ -1,6 +1,8 @@
 const app = {
   async init() {
     // 첫 화면에서는 무거운 백데이터를 읽지 않습니다.
+    // 마감 기준일(meta.json)만 가볍게 불러옵니다.
+    await dataLoader.loadMeta();
     uiRenderer.renderLogin();
     this._bindEvents();
   },

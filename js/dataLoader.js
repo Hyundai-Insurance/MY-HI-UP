@@ -5,6 +5,23 @@ const dataLoader = {
     tcStepUp: [],
   },
   _plannerCache: new Map(),
+  _meta: null,
+
+  async loadMeta() {
+    try {
+      const response = await fetch("data/meta.json", { cache: "no-cache" });
+      if (!response.ok) throw new Error(`META_LOAD_FAILED:${response.status}`);
+      this._meta = await response.json();
+    } catch (err) {
+      console.warn("[MY HI-UP] 마감 기준일 파일을 불러오지 못해 기존 날짜 계산을 사용합니다.", err);
+      this._meta = null;
+    }
+    return this._meta;
+  },
+
+  getClosingDate() {
+    return this._meta?.closingDate || null;
+  },
 
   normalizePlannerCode(rawCode) {
     if (rawCode === null || rawCode === undefined) return "";

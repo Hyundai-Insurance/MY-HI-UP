@@ -2,10 +2,12 @@
 """MY HI-UP XLSX -> planner JSON shards. Python standard library only."""
 from pathlib import Path
 import zipfile, xml.etree.ElementTree as ET, re, json, shutil
+from datetime import datetime, timedelta, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
 XLSX = ROOT / "data" / "MY_HI_UP_DATA.xlsx"
 OUT = ROOT / "data" / "planners"
+META = ROOT / "data" / "meta.json"
 MAIN = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 
 def norm_code(v):
@@ -137,7 +139,17 @@ def main():
         )
     if OUT.exists(): shutil.rmtree(OUT)
     tmp.rename(OUT)
+
+    # 데이터가 실제로 변환된 시점(KST)의 전일을 마감 기준일로 저장합니다.
+    kst = timezone(timedelta(hours=9))
+    closing_date = (datetime.now(kst).date() - timedelta(days=1)).isoformat()
+    META.write_text(
+        json.dumps({"closingDate": closing_date}, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
     print(f"Generated {len(prefixes)} shards for {len(data)} planner codes.")
+    print(f"Closing date: {closing_date}")
 
 if __name__ == "__main__":
     main()

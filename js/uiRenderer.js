@@ -43,7 +43,7 @@ const uiRenderer = {
 
   renderGuideHeader() {
     this.el("guide-title").textContent = "3분기 HI-UP";
-    this.el("guide-closing").textContent = dateHelper.getClosingDateLabel();
+    this.el("guide-closing").textContent = dateHelper.getClosingDateLabel(dataLoader.getClosingDate());
   },
 
   renderPlannerProfile(plannerData) {

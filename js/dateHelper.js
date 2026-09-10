@@ -54,8 +54,18 @@ const dateHelper = {
   },
 
   /** "전일 마감 기준 · 8월 27일" 문구 생성 */
-  getClosingDateLabel(date = this.getToday()) {
-    const prevBizDate = this.getPreviousBusinessDate(date);
+  getClosingDateLabel(closingDate = null) {
+    // meta.json에 저장된 날짜가 있으면 그 날짜를 그대로 사용합니다.
+    // 즉, 데이터가 업데이트되지 않으면 날짜도 바뀌지 않습니다.
+    if (closingDate) {
+      const parts = String(closingDate).split("-");
+      if (parts.length === 3) {
+        return `전일 마감 기준 · ${Number(parts[1])}월 ${Number(parts[2])}일`;
+      }
+    }
+
+    // meta.json이 아직 없는 최초 배포/오류 상황에서만 기존 방식으로 표시합니다.
+    const prevBizDate = this.getPreviousBusinessDate(this.getToday());
     return `전일 마감 기준 · ${this.formatMonthDay(prevBizDate)}`;
   },
 
