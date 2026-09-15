@@ -1046,3 +1046,67 @@ button {
     letter-spacing: -0.065em;
   }
 }
+
+/* ==========================================================
+   2026-09-15 로그인 화면 리뉴얼 — 밝은 구름 + HI-UP 캐릭터
+   결과 화면/계산 로직에는 영향 없음
+   ========================================================== */
+.login-screen {
+  position: relative;
+  overflow: hidden;
+  justify-content: flex-start;
+  padding: 30px 18px 34px;
+  background:
+    radial-gradient(circle at 15% 7%, rgba(255,255,255,.98) 0 9%, transparent 22%),
+    radial-gradient(circle at 88% 17%, rgba(255,255,255,.9) 0 10%, transparent 24%),
+    linear-gradient(180deg, #cfeeff 0%, #edf8ff 44%, #f8fbff 100%);
+}
+.login-screen::before,
+.login-screen::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(255,255,255,.76);
+  filter: blur(.2px);
+  pointer-events: none;
+}
+.login-screen::before { width: 180px; height: 62px; left: -54px; top: 150px; box-shadow: 55px -22px 0 10px rgba(255,255,255,.68); }
+.login-screen::after { width: 190px; height: 68px; right: -70px; bottom: 70px; box-shadow: -58px 22px 0 8px rgba(255,255,255,.62); }
+.login-brand-new { position: relative; z-index: 2; margin: 4px 0 10px; }
+.login-kicker { color: #173b76; font-size: 15px; font-weight: 800; margin-bottom: 5px; }
+.login-logo-title { margin: 0 0 2px; font-size: clamp(34px, 10vw, 48px); line-height: 1; letter-spacing: -2px; }
+.login-logo-title span { color: #102e61; }
+.login-logo-title strong { color: #ff8a18; font-weight: 900; }
+.login-brand-new .brand-sub { font-size: 13px; font-weight: 700; color: #7386a6; }
+.login-mascot-wrap { position: relative; z-index: 1; width: min(100%, 430px); height: clamp(185px, 48vw, 230px); margin: 0 auto -18px; overflow: hidden; border-radius: 30px 30px 18px 18px; }
+.login-mascot { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 48%; mix-blend-mode: normal; }
+.login-card-new { position: relative; z-index: 3; padding: 22px 18px 18px; border-radius: 26px; box-shadow: 0 12px 34px rgba(37,92,145,.14); border: 1px solid rgba(255,255,255,.9); }
+.login-welcome { text-align: center; color: #1682f4; font-size: 25px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 2px; }
+.login-label-new { text-align: center; font-size: 20px; margin-bottom: 16px; }
+.input-wrap { position: relative; }
+.input-person { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #8c9bb4; font-size: 16px; z-index: 2; }
+.login-card-new .code-input { font-size: 22px; padding: 17px 16px 17px 44px; background: #f9fbff; border: 1.5px solid #c8d4e5; letter-spacing: .08em; }
+.login-card-new .code-input::placeholder { font-size: 17px; letter-spacing: 0; }
+.login-card-new .primary-btn { margin-top: 14px; padding: 17px; border-radius: 16px; background: linear-gradient(135deg,#0877f5,#2f96ff); box-shadow: 0 9px 20px rgba(17,118,236,.22); }
+.login-card-new .primary-btn span { font-size: 27px; vertical-align: -2px; margin-left: 6px; }
+.login-benefits { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; margin-top: 14px; }
+.login-benefit { min-width: 0; min-height: 88px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 9px 5px; color: #17345f; }
+.login-benefit b { font-size: 23px; line-height: 1; margin-bottom: 6px; }
+.login-benefit span { font-size: 12px; line-height: 1.35; font-weight: 800; word-break: keep-all; }
+.login-benefit.is-blue { background: #eaf5ff; }
+.login-benefit.is-blue b { color: #1682f4; }
+.login-benefit.is-gold { background: #fff6df; }
+.login-benefit.is-pink { background: #fff0f4; }
+.login-foot-note { position: relative; z-index: 2; color: #8191aa; margin-top: 18px; }
+.login-foot-note span { display: inline-block; margin-top: 7px; font-size: 11.5px; color: #9aa8bd; }
+@media (max-width: 380px) {
+  .login-screen { padding: 22px 14px 26px; }
+  .login-mascot-wrap { height: 170px; margin-bottom: -12px; }
+  .login-card-new { padding: 18px 14px 15px; }
+  .login-welcome { font-size: 22px; }
+  .login-label-new { font-size: 18px; margin-bottom: 12px; }
+  .login-card-new .code-input { font-size: 19px; padding-top: 15px; padding-bottom: 15px; }
+  .login-card-new .code-input::placeholder { font-size: 15px; }
+  .login-benefit { min-height: 78px; }
+  .login-benefit span { font-size: 11px; }
+}
