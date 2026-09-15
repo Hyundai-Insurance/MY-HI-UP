@@ -1331,3 +1331,14 @@ button {
     font-size: 21px !important;
   }
 }
+
+
+/* 2026-09-15 입력창 점 완전 제거 + 중앙 정렬 */
+#screen-login .input-person { display: none !important; }
+#screen-login .input-wrap { position: relative; }
+#screen-login .input-wrap .code-input {
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+  text-align: center !important;
+  text-indent: 0 !important;
+}
