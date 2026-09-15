@@ -1014,3 +1014,35 @@ button {
   .honors-action-label { font-size: 12px; }
 }
 
+
+
+/* ==========================================================
+   2026-09-15 매출아너스 시상금 — 작은 화면 한 줄 고정
+   ========================================================== */
+#section-honors .honors-money-value {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  font-size: clamp(14px, 4.35vw, 20px);
+  line-height: 1.2;
+  letter-spacing: -0.055em;
+  white-space: nowrap !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  hyphens: none;
+  text-align: center;
+}
+
+@media (max-width: 380px) {
+  #section-honors .honors-money-value {
+    font-size: clamp(14px, 4.2vw, 16px);
+    letter-spacing: -0.06em;
+  }
+}
+
+@media (max-width: 340px) {
+  #section-honors .honors-money-value {
+    font-size: 13.5px;
+    letter-spacing: -0.065em;
+  }
+}
