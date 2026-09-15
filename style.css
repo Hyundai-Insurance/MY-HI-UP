@@ -1110,3 +1110,73 @@ button {
   .login-benefit { min-height: 78px; }
   .login-benefit span { font-size: 11px; }
 }
+
+
+/* ==========================================================
+   2026-09-15 로그인 화면 핫픽스
+   - 상단/캐릭터 잘림 방지
+   - 화면 전체 밝은 하늘 + 구름 느낌 유지
+   ========================================================== */
+#screen-login.login-screen {
+  min-height: 100svh;
+  justify-content: flex-start;
+  padding: max(22px, env(safe-area-inset-top)) 12px 30px;
+  background:
+    radial-gradient(ellipse at -8% 14%, rgba(255,255,255,.98) 0 13%, transparent 14%),
+    radial-gradient(ellipse at 105% 28%, rgba(255,255,255,.96) 0 16%, transparent 17%),
+    radial-gradient(ellipse at 8% 86%, rgba(255,255,255,.90) 0 14%, transparent 15%),
+    linear-gradient(180deg, #ccecff 0%, #eaf7ff 48%, #f7fbff 100%);
+}
+
+#screen-login .login-brand-new {
+  flex: 0 0 auto;
+  margin: 0 0 12px;
+  padding-top: 0;
+}
+
+#screen-login .login-kicker {
+  margin-top: 0;
+}
+
+#screen-login .login-logo-title {
+  font-size: clamp(36px, 10.5vw, 50px);
+  line-height: 1.08;
+  overflow: visible;
+}
+
+#screen-login .login-mascot-wrap {
+  width: min(100%, 440px);
+  height: auto;
+  aspect-ratio: 885 / 390;
+  margin: 0 auto -10px;
+  border-radius: 26px 26px 18px 18px;
+  overflow: hidden;
+  background: #dff3ff;
+}
+
+#screen-login .login-mascot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+#screen-login .login-card-new {
+  margin-top: 0;
+}
+
+@media (max-width: 380px) {
+  #screen-login.login-screen {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  #screen-login .login-logo-title {
+    font-size: clamp(34px, 10vw, 42px);
+  }
+
+  #screen-login .login-mascot-wrap {
+    width: 100%;
+    aspect-ratio: 885 / 400;
+  }
+}
