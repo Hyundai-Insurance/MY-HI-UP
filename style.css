@@ -1269,3 +1269,65 @@ button {
     border-radius: 23px !important;
   }
 }
+
+
+/* ==========================================================
+   2026-09-15 로그인 입력창 최종 보정
+   - 왼쪽 점/아이콘 제거
+   - 사번 6자리 크게
+   - 실제 입력값 가로/세로 정중앙
+   ========================================================== */
+#screen-login .code-input {
+  display: block !important;
+  width: 100% !important;
+  height: 68px !important;
+  min-height: 68px !important;
+  padding: 0 18px !important;
+  margin: 0 !important;
+  text-align: center !important;
+  text-align-last: center !important;
+  font-size: clamp(22px, 6.4vw, 28px) !important;
+  line-height: 68px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  color: #173a72 !important;
+  background-image: none !important;
+  background-position: initial !important;
+  text-indent: 0 !important;
+}
+
+#screen-login .code-input::placeholder {
+  color: #98a5ba !important;
+  opacity: 1 !important;
+  font-size: clamp(20px, 5.8vw, 25px) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  text-align: center !important;
+}
+
+#screen-login .code-input::-webkit-input-placeholder {
+  text-align: center !important;
+}
+
+/* 입력창 앞 장식/아이콘/점이 있더라도 모두 숨김 */
+#screen-login .input-icon,
+#screen-login .code-input-icon,
+#screen-login .login-input-icon,
+#screen-login .input-wrap::before,
+#screen-login .code-input-wrap::before,
+#screen-login .login-input-wrap::before {
+  display: none !important;
+  content: none !important;
+}
+
+@media (max-width: 380px) {
+  #screen-login .code-input {
+    height: 64px !important;
+    min-height: 64px !important;
+    line-height: 64px !important;
+    font-size: 23px !important;
+  }
+  #screen-login .code-input::placeholder {
+    font-size: 21px !important;
+  }
+}
