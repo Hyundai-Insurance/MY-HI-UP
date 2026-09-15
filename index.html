@@ -15,7 +15,7 @@
 <title>MY HI-UP · 나의 실적과 시상 현황</title>
 <meta name="description" content="플래너 코드로 개인환산순증, 매출아너스, TC스텝업 시상 현황을 한눈에 확인하세요." />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
-<link rel="stylesheet" href="style.css?v=20260915final3" />
+<link rel="stylesheet" href="style.css?v=20260915hybrid" />
 </head>
 <body>
 <div class="app-shell">
@@ -25,15 +25,37 @@
     <div class="msg-sub">잠시만 기다려 주세요.</div>
   </div>
 
-  <div id="screen-login" class="screen login-screen hidden poster-login-screen">
-    <div class="poster-login-stage">
-      <img class="poster-login-image" src="images/hiup-login-poster.jpg?v=20260915final3" alt="MY HI-UP" />
-      <div class="poster-input-overlay">
+  <div id="screen-login" class="screen login-screen hidden">
+    <div class="login-sky-deco login-cloud cloud-a"></div>
+    <div class="login-sky-deco login-cloud cloud-b"></div>
+
+    <div class="brand-block login-brand-new">
+      <div class="login-kicker">나의 실적과 시상을 한눈에!</div>
+      <h1 class="brand-title login-logo-title"><span>MY</span> <strong>HI-UP</strong></h1>
+      <p class="brand-sub">오늘도, 더 높은 나를 위해</p>
+    </div>
+
+    <div class="login-mascot-wrap" aria-hidden="true">
+      <img class="login-mascot" src="images/hiup-login-hero.jpg?v=20260915hybrid" alt="" />
+    </div>
+
+    <div class="login-card login-card-new">
+      <div class="login-welcome">하이플래너님!</div>
+      <label class="login-label login-label-new" for="planner-code-input">사번을 입력해주세요!</label>
+      <div class="input-wrap">
+        <span class="input-person" aria-hidden="true">●</span>
         <input id="planner-code-input" class="code-input" type="text" maxlength="6" placeholder="사번 6자리" autocomplete="off" autocapitalize="characters" />
-        <div id="login-error" class="login-error-box hidden"></div>
-        <button id="submit-btn" class="primary-btn" type="button" aria-label="확인하기">확인하기</button>
+      </div>
+      <div id="login-error" class="login-error-box hidden"></div>
+      <button id="submit-btn" class="primary-btn">확인하기 <span aria-hidden="true">›</span></button>
+
+      <div class="login-benefits" aria-hidden="true">
+        <div class="login-benefit is-blue"><b>▥</b><span>나의 실적<br />한눈에!</span></div>
+        <div class="login-benefit is-gold"><b>🏆</b><span>시상금<br />미리 확인!</span></div>
+        <div class="login-benefit is-pink"><b>🎯</b><span>다음 목표까지<br />함께!</span></div>
       </div>
     </div>
+    <p class="login-foot-note">본 서비스는 소속 플래너 본인의 조회를 위한 것입니다.<br />데이터는 매일 오전 11시 업데이트됩니다.<br /><span>© 2026 현대해상 개인영업지원파트</span></p>
   </div>
 
   <div id="screen-error" class="screen center-screen hidden">
