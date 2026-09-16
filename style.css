@@ -1880,3 +1880,29 @@ button {
   #screen-histar .hs-reward-bonus{font-size:12.5px}
   #screen-histar .hs-reward-goal.is-secondary .hs-reward-bonus{font-size:11.5px}
 }
+
+/* ===== HI-STAR REV17: restore page background + highlight only HI-STAR top tab ===== */
+#screen-histar{
+  background:var(--color-bg, #f5f7fa) !important;
+}
+#screen-histar .histar-header{
+  background:linear-gradient(135deg,#173a72,#285996) !important;
+}
+#screen-histar .histar-guide{
+  color:#6d7c91 !important;
+}
+#screen-histar .result-footer{
+  color:#8a96a8 !important;
+}
+.quick-nav .histar-nav-btn{
+  background:linear-gradient(135deg,#f4c45d 0%,#e8aa32 100%) !important;
+  color:#3f2b05 !important;
+  border:1px solid rgba(178,119,15,.24) !important;
+  box-shadow:0 3px 9px rgba(197,139,31,.18);
+  font-weight:900 !important;
+}
+@media (hover:hover) and (pointer:fine){
+  .quick-nav .histar-nav-btn:hover{
+    background:linear-gradient(135deg,#f7ce72 0%,#edb443 100%) !important;
+  }
+}
