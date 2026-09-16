@@ -1607,3 +1607,123 @@ button {
 
 /* REV10: TC 비대상자는 남은 3개 상단 탭을 전체 폭에 균등 배치 */
 .quick-nav.three-tabs{grid-template-columns:repeat(3,minmax(0,1fr));}
+
+/* ===== HI-STAR REV11 PATCH: refined expected-award card ===== */
+#screen-histar .histar-award{
+  margin-top:12px;
+  padding:18px 18px 16px;
+  background:#fff;
+  border:1px solid #e5eaf1;
+  border-radius:20px;
+  box-shadow:0 5px 18px rgba(23,58,114,.055);
+}
+#screen-histar .hs-reward-kicker{
+  margin:0 0 13px;
+  font-size:14px;
+  line-height:1.2;
+  font-weight:900;
+  color:#344861;
+}
+#screen-histar .hs-reward-goal.is-primary{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+  min-height:108px;
+  padding:17px 14px 15px;
+  text-align:center;
+  background:#f8faff;
+  border:1px solid #e1e8f3;
+  border-radius:17px;
+}
+#screen-histar .hs-reward-goal.is-primary > strong{
+  order:-1;
+  display:block;
+  font-size:36px;
+  line-height:1;
+  font-weight:950;
+  color:#173a72;
+  letter-spacing:-.045em;
+}
+#screen-histar .hs-reward-goal.is-primary .hs-reward-condition{
+  display:block;
+  font-size:14px;
+  line-height:1.25;
+  font-weight:800;
+  color:#6c7a8d;
+}
+#screen-histar .hs-reward-goal.is-primary .hs-reward-condition b{
+  font-size:17px;
+  color:#b85e2c;
+  font-weight:950;
+}
+#screen-histar .hs-reward-next-label{
+  margin:14px 2px 7px;
+  font-size:11px;
+  line-height:1.2;
+  font-weight:850;
+  color:#8995a5;
+}
+#screen-histar .hs-reward-goal.is-secondary{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-height:auto;
+  padding:12px 13px;
+  background:#fff;
+  border:1px solid #e8ecf2;
+  border-radius:14px;
+}
+#screen-histar .hs-reward-goal.is-secondary .hs-reward-condition{
+  font-size:12.5px;
+  font-weight:750;
+  color:#748195;
+}
+#screen-histar .hs-reward-goal.is-secondary .hs-reward-condition b{
+  font-size:15px;
+  color:#536780;
+}
+#screen-histar .hs-reward-goal.is-secondary strong{
+  font-size:19px;
+  font-weight:950;
+  color:#173a72;
+}
+#screen-histar .hs-reward-earned{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:100px;
+  padding:16px 14px;
+  text-align:center;
+  background:#f8faff;
+  border:1px solid #e1e8f3;
+  border-radius:17px;
+}
+#screen-histar .hs-reward-earned strong{
+  order:-1;
+  font-size:34px;
+  line-height:1;
+  font-weight:950;
+  color:#173a72;
+  letter-spacing:-.045em;
+}
+#screen-histar .hs-reward-earned span{
+  font-size:13px;
+  font-weight:850;
+  color:#6c7a8d;
+}
+@media(max-width:599px){
+  #screen-histar .histar-award{padding:16px 14px 14px}
+  #screen-histar .hs-reward-goal.is-primary{min-height:100px;padding:15px 12px 14px}
+  #screen-histar .hs-reward-goal.is-primary > strong{font-size:clamp(31px,8.8vw,37px)}
+  #screen-histar .hs-reward-goal.is-primary .hs-reward-condition{font-size:13px}
+  #screen-histar .hs-reward-goal.is-primary .hs-reward-condition b{font-size:16px}
+  #screen-histar .hs-reward-goal.is-secondary{padding:11px 12px}
+  #screen-histar .hs-reward-goal.is-secondary strong{font-size:clamp(17px,4.8vw,20px)}
+  #screen-histar .hs-reward-earned strong{font-size:clamp(30px,8.4vw,35px)}
+}
