@@ -1818,3 +1818,63 @@ button {
   #screen-histar .hs-reward-goal.is-secondary strong{font-size:clamp(18px,5.2vw,21px)}
   #screen-histar .hs-reward-earned strong{font-size:clamp(35px,10vw,43px)}
 }
+
+/* ===== HI-STAR REV13 PATCH: match HI-UP award-highlight sizing & color ===== */
+#screen-histar .histar-award{
+  background: var(--color-gold-bg);
+  border: 1.5px solid #EBD9AE;
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+#screen-histar .hs-reward-kicker{
+  color: var(--color-gold-deep);
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+#screen-histar .hs-reward-goal.is-primary,
+#screen-histar .hs-reward-earned{
+  min-height: 0;
+  padding: 13px 14px 12px;
+  background: rgba(255,255,255,.48);
+  border: 1px solid rgba(201,165,89,.34);
+  border-radius: 14px;
+  box-shadow: none;
+}
+#screen-histar .hs-reward-goal.is-primary > strong,
+#screen-histar .hs-reward-earned strong{
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--color-gold-deep);
+  letter-spacing: -.01em;
+}
+#screen-histar .hs-reward-goal.is-primary .hs-reward-condition,
+#screen-histar .hs-reward-earned span{
+  font-size: 13px;
+  color: var(--color-gold-deep);
+  opacity: .82;
+}
+#screen-histar .hs-reward-goal.is-primary .hs-reward-condition b{
+  font-size: 15px;
+  color: var(--color-gold-deep);
+}
+#screen-histar .hs-reward-next-label{
+  color: var(--color-gold-deep);
+  opacity: .75;
+}
+#screen-histar .hs-reward-goal.is-secondary{
+  background: rgba(255,255,255,.32);
+  border: 1px solid rgba(201,165,89,.28);
+}
+#screen-histar .hs-reward-goal.is-secondary .hs-reward-condition,
+#screen-histar .hs-reward-goal.is-secondary .hs-reward-condition b,
+#screen-histar .hs-reward-goal.is-secondary strong{
+  color: var(--color-gold-deep);
+}
+@media(max-width:599px){
+  #screen-histar .histar-award{padding:16px 18px}
+  #screen-histar .hs-reward-kicker{font-size:15px;margin-bottom:10px}
+  #screen-histar .hs-reward-goal.is-primary{min-height:0;padding:13px 14px 12px}
+  #screen-histar .hs-reward-goal.is-primary > strong{font-size:30px}
+  #screen-histar .hs-reward-earned{min-height:0;padding:13px 14px 12px}
+  #screen-histar .hs-reward-earned strong{font-size:30px}
+}
