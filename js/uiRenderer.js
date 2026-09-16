@@ -249,6 +249,40 @@ const uiRenderer = {
     });
     const cel=this.el("histar-celebrate");
     cel.textContent = complete.length ? `★ ${complete.length}줄 HI-STAR 완성!` : achieved.some(Boolean) ? `현재 ${achieved.filter(Boolean).length}개 미션 달성!` : "첫 HI-STAR 스탬프에 도전해보세요!";
+
+    // HI-STAR 시상금: 6줄=5만원, 8줄=10만원. 현재 배치에서 필요한 최소 추가 칸 수를 계산한다.
+    const award=this.el("histar-award");
+    const currentLines=complete.length;
+    const currentAward=currentLines >= 8 ? 100000 : currentLines >= 6 ? 50000 : 0;
+    const missing=[];
+    achieved.forEach((ok,i)=>{ if(!ok) missing.push(i); });
+    const lineCountFor = (extraSet) => combos.filter(line => line.every(i => achieved[i] || extraSet.has(i))).length;
+    const minExtraFor = (targetLines) => {
+      if(currentLines >= targetLines) return 0;
+      for(let k=1;k<=missing.length;k++){
+        const choose=(start,picked)=>{
+          if(picked.length===k) return lineCountFor(new Set(picked)) >= targetLines ? picked.slice() : null;
+          for(let x=start;x<=missing.length-(k-picked.length);x++){
+            picked.push(missing[x]); const hit=choose(x+1,picked); picked.pop(); if(hit) return hit;
+          }
+          return null;
+        };
+        const hit=choose(0,[]); if(hit) return hit.length;
+      }
+      return null;
+    };
+    const n5=minExtraFor(6), n10=minExtraFor(8);
+    const won = n => `${n.toLocaleString("ko-KR")}원`;
+    let nextText='';
+    if(currentAward >= 100000) nextText='10만원 시상 기준을 달성했어요!';
+    else if(currentAward >= 50000) nextText = n10 == null ? '현재 5만원 시상 확보' : `현재 5만원 확보 · ${n10}칸 추가 달성 시 10만원`;
+    else {
+      const parts=[];
+      if(n5 != null) parts.push(`${n5}칸 추가 달성 시 5만원`);
+      if(n10 != null) parts.push(`${n10}칸 추가 달성 시 10만원`);
+      nextText=parts.join(' · ');
+    }
+    award.innerHTML=`<div class="hs-award-label">예상 시상금</div><div class="hs-award-main"><span>현재 확보</span><strong>${won(currentAward)}</strong></div><div class="hs-award-next">${nextText}</div>`;
     this.showScreen("histar");
   },
 
