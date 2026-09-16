@@ -244,7 +244,7 @@ const uiRenderer = {
     missions.forEach((m,i) => {
       const btn=document.createElement("button"); btn.type="button"; btn.className=`hs-card${m.achieved?' is-achieved':''}${lineCells.has(i)?' is-line':''}`;
       btn.setAttribute("aria-label",`${m.title} 상세 보기`);
-      btn.innerHTML=`<span class="hs-card-inner"><span class="hs-face hs-front"><span class="hs-num">${i+1}</span><span class="hs-title">${m.title}</span>${m.achieved?'<span class="hs-stamp">완료</span>':'<span class="hs-pending">미달성</span>'}</span><span class="hs-face hs-back"><span class="hs-back-title">${m.title}</span><span class="hs-current-label">현재 실적</span><span class="hs-current">${fmt(m)}</span><span class="hs-current-label">달성조건</span><span class="hs-rule">${m.rule || '-'}</span><span class="hs-status">${m.achieved?'✓ 달성 완료':'목표 달성에 도전해보세요'}</span></span></span>`;
+      btn.innerHTML=`<span class="hs-card-inner"><span class="hs-face hs-front"><span class="hs-num">${i+1}</span><span class="hs-title">${m.title}</span>${m.achieved?'<span class="hs-stamp">완료</span>':'<span class="hs-pending">미달성</span>'}</span><span class="hs-face hs-back"><span class="hs-back-title">${m.title}</span><span class="hs-current-label">현재 실적</span><span class="hs-current">${fmt(m)}</span><span class="hs-current-label">달성조건</span><span class="hs-rule">${m.rule || '-'}</span></span></span>`;
       btn.addEventListener("click",()=>btn.classList.toggle("is-flipped")); board.appendChild(btn);
     });
     const cel=this.el("histar-celebrate");
@@ -273,16 +273,18 @@ const uiRenderer = {
     };
     const n5=minExtraFor(6), n10=minExtraFor(8);
     const won = n => `${n.toLocaleString("ko-KR")}원`;
-    let nextText='';
-    if(currentAward >= 100000) nextText='10만원 시상 기준을 달성했어요!';
-    else if(currentAward >= 50000) nextText = n10 == null ? '현재 5만원 시상 확보' : `현재 5만원 확보 · ${n10}칸 추가 달성 시 10만원`;
-    else {
-      const parts=[];
-      if(n5 != null) parts.push(`${n5}칸 추가 달성 시 5만원`);
-      if(n10 != null) parts.push(`${n10}칸 추가 달성 시 10만원`);
-      nextText=parts.join(' · ');
+    let awardHtml='';
+    if(currentAward >= 100000){
+      awardHtml=`<div class="hs-reward-kicker">HI-STAR 시상 달성!</div><div class="hs-reward-earned"><span>현재 확보 시상금</span><strong>${won(currentAward)}</strong></div>`;
+    } else if(currentAward >= 50000){
+      const next = n10 == null ? '' : `<div class="hs-reward-target"><span class="hs-reward-more">+${n10}칸</span><span class="hs-reward-arrow">→</span><strong>100,000원</strong></div>`;
+      awardHtml=`<div class="hs-reward-kicker">현재 확보 시상금</div><div class="hs-reward-earned"><strong>${won(currentAward)}</strong><span>확보 🎉</span></div>${next ? `<div class="hs-reward-next-label">다음 시상까지</div>${next}` : ''}`;
+    } else {
+      const first = n5 == null ? '' : `<div class="hs-reward-target is-primary"><span class="hs-reward-more">+${n5}칸</span><span class="hs-reward-arrow">→</span><strong>50,000원</strong></div>`;
+      const second = n10 == null ? '' : `<div class="hs-reward-target is-secondary"><span class="hs-reward-more">+${n10}칸</span><span class="hs-reward-arrow">→</span><strong>100,000원</strong></div>`;
+      awardHtml=`<div class="hs-reward-kicker">다음 시상까지</div>${first}${second}`;
     }
-    award.innerHTML=`<div class="hs-award-label">예상 시상금</div><div class="hs-award-main"><span>현재 확보</span><strong>${won(currentAward)}</strong></div><div class="hs-award-next">${nextText}</div>`;
+    award.innerHTML=awardHtml;
     this.showScreen("histar");
   },
 

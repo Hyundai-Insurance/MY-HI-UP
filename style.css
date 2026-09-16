@@ -1444,3 +1444,41 @@ button {
  .histar-award{margin-left:6px;margin-right:6px;padding:14px 15px}.hs-award-main strong{font-size:21px}.hs-award-next{font-size:12px}
 }
 @media(max-width:360px){#screen-histar .hs-card{min-height:138px}#screen-histar .hs-title,#screen-histar .hs-card:not(.is-achieved) .hs-title,#screen-histar .hs-card.is-achieved .hs-title{font-size:11.8px!important}}
+
+/* ===== HI-STAR REV6: award guidance priority + simplified card backs ===== */
+#screen-histar .histar-award{margin-top:12px;margin-bottom:12px}
+#screen-histar .hs-award-next{font-size:16px;font-weight:900;line-height:1.4;color:#b65f2f;padding-top:11px;margin-top:10px}
+#screen-histar .hs-status{display:none!important}
+@media(max-width:599px){
+  #screen-histar .hs-award-next{font-size:clamp(14px,3.9vw,17px);line-height:1.38}
+  #screen-histar .histar-award{margin-top:10px;margin-bottom:10px}
+}
+
+/* ===== HI-STAR REV7: make "how many more squares -> reward" unmistakable ===== */
+#screen-histar .histar-award{padding:16px 16px 15px;border:1px solid #dfe7f2;background:linear-gradient(180deg,#ffffff 0%,#fbfcff 100%)}
+#screen-histar .hs-reward-kicker{font-size:13px;font-weight:900;color:#53657d;margin-bottom:10px;letter-spacing:-.02em}
+#screen-histar .hs-reward-target{display:grid;grid-template-columns:minmax(62px,.72fr) 24px minmax(105px,1.28fr);align-items:center;gap:7px;padding:12px 13px;border-radius:15px;background:#f2f6fb;border:1px solid #e1e8f2;margin-top:8px}
+#screen-histar .hs-reward-target.is-primary{background:#fff7f0;border-color:#f3d6c2}
+#screen-histar .hs-reward-more{font-size:22px;line-height:1;font-weight:950;color:#173a72;white-space:nowrap;letter-spacing:-.04em}
+#screen-histar .hs-reward-arrow{text-align:center;font-size:19px;font-weight:900;color:#8b98a9}
+#screen-histar .hs-reward-target strong{font-size:24px;line-height:1;font-weight:950;color:#b85e2c;text-align:right;white-space:nowrap;letter-spacing:-.045em}
+#screen-histar .hs-reward-target.is-secondary{padding-top:10px;padding-bottom:10px;background:#f7f9fc}
+#screen-histar .hs-reward-target.is-secondary .hs-reward-more{font-size:17px;color:#65758a}
+#screen-histar .hs-reward-target.is-secondary strong{font-size:19px;color:#173a72}
+#screen-histar .hs-reward-next-label{margin-top:13px;font-size:12px;font-weight:850;color:#77869a}
+#screen-histar .hs-reward-earned{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+#screen-histar .hs-reward-earned strong{font-size:30px;line-height:1;font-weight:950;color:#173a72;letter-spacing:-.045em}
+#screen-histar .hs-reward-earned span{font-size:14px;font-weight:850;color:#b85e2c}
+@media(max-width:599px){
+ #screen-histar .histar-award{padding:14px 13px 13px}
+ #screen-histar .hs-reward-target{grid-template-columns:minmax(55px,.72fr) 20px minmax(92px,1.28fr);gap:5px;padding:11px 10px}
+ #screen-histar .hs-reward-more{font-size:clamp(19px,5.2vw,23px)}
+ #screen-histar .hs-reward-target strong{font-size:clamp(21px,5.7vw,25px)}
+ #screen-histar .hs-reward-target.is-secondary .hs-reward-more{font-size:clamp(15px,4vw,18px)}
+ #screen-histar .hs-reward-target.is-secondary strong{font-size:clamp(17px,4.7vw,20px)}
+ #screen-histar .hs-reward-earned strong{font-size:clamp(27px,7.2vw,32px)}
+}
+@media(max-width:350px){
+ #screen-histar .hs-reward-target{grid-template-columns:minmax(50px,.68fr) 17px minmax(86px,1.32fr);padding-left:8px;padding-right:8px}
+ #screen-histar .hs-reward-arrow{font-size:16px}
+}
