@@ -179,14 +179,18 @@ const uiRenderer = {
     const section = this.el("section-tc");
     const nav = this.el("nav-tc");
 
+    const quickNav = nav ? nav.closest(".quick-nav") : null;
+
     if (!tcResult.eligible) {
       section.classList.add("hidden");
       nav.classList.add("hidden");
+      if (quickNav) quickNav.classList.add("three-tabs");
       return;
     }
 
     section.classList.remove("hidden");
     nav.classList.remove("hidden");
+    if (quickNav) quickNav.classList.remove("three-tabs");
 
     const monthLabel = dateHelper.getMonthLabel();
     this.el("tc-progress-title").textContent = `${monthLabel} 실적진도`;

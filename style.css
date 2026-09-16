@@ -1603,3 +1603,7 @@ button {
   #screen-histar .hs-reward-condition b{font-size:21px}
   #screen-histar .hs-reward-goal strong{font-size:22px}
 }
+
+
+/* REV10: TC 비대상자는 남은 3개 상단 탭을 전체 폭에 균등 배치 */
+.quick-nav.three-tabs{grid-template-columns:repeat(3,minmax(0,1fr));}
