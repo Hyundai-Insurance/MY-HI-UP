@@ -1818,3 +1818,15 @@ button {
   #screen-histar .hs-reward-goal.is-secondary strong{font-size:clamp(18px,5.2vw,21px)}
   #screen-histar .hs-reward-earned strong{font-size:clamp(35px,10vw,43px)}
 }
+
+
+/* ===== HI-STAR REV15 PATCH: match top HI-UP award amount size ===== */
+#screen-histar .hs-reward-goal.is-primary > strong,
+#screen-histar .hs-reward-earned strong{
+  font-size:32px !important;
+  line-height:1.08;
+}
+@media(max-width:599px){
+  #screen-histar .hs-reward-goal.is-primary > strong,
+  #screen-histar .hs-reward-earned strong{font-size:32px !important;}
+}
