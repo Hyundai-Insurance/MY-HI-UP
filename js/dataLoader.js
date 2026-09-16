@@ -3,6 +3,7 @@ const dataLoader = {
     personalIncrease: [],
     honors: [],
     tcStepUp: [],
+    hiStar: [],
   },
   _plannerCache: new Map(),
   _meta: null,
@@ -70,6 +71,7 @@ const dataLoader = {
     this._cache.personalIncrease = planner?.personalIncrease ? [planner.personalIncrease] : [];
     this._cache.honors = planner?.honors ? [planner.honors] : [];
     this._cache.tcStepUp = planner?.tcStepUp ? [planner.tcStepUp] : [];
+    this._cache.hiStar = planner?.hiStar ? [planner.hiStar] : [];
 
     return planner;
   },
@@ -82,7 +84,7 @@ const dataLoader = {
   isCodeRegistered(code) {
     const normalized = this.normalizePlannerCode(code);
     const planner = this._plannerCache.get(normalized);
-    return !!(planner && (planner.personalIncrease || planner.honors));
+    return !!(planner && (planner.personalIncrease || planner.honors || planner.tcStepUp || planner.hiStar));
   },
 
   findPlannerData(code) {
@@ -93,6 +95,7 @@ const dataLoader = {
       personalIncrease: null,
       honors: null,
       tcStepUp: null,
+      hiStar: null,
     };
   },
 };

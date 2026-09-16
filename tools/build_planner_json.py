@@ -78,6 +78,7 @@ def main():
         p_rows = load_rows(z, 1, shared)
         h_rows = load_rows(z, 2, shared)
         t_rows = load_rows(z, 3, shared)
+        hs_rows = load_rows(z, 5, shared)
 
     data = {}
 
@@ -122,11 +123,40 @@ def main():
         }
         data.setdefault(c, {})["tcStepUp"] = rec
 
+
+    # HI-STAR: 7행부터 플래너별 데이터, 4행은 각 미션의 달성조건
+    hs_rules = {}
+    if 4 in hs_rows:
+        rr = hs_rows[4]
+        for key, idx in [("consent",7),("design",9),("targetDb",11),("weekly",13),("mainProduct",15),("plan",17),("week1",19),("event",22),("auto",24)]:
+            hs_rules[key] = str(get(rr, idx) or "").strip()
+    for rn, r in hs_rows.items():
+        if rn < 7: continue
+        c = norm_code(get(r, 4))
+        if not c: continue
+        def yn(idx): return str(get(r, idx) or "").strip().upper() == "Y"
+        missions = [
+            {"key":"consent","title":"설계동의 & 행복보장","current":num(get(r,7)),"unit":"건","achieved":yn(8),"rule":hs_rules.get("consent","")},
+            {"key":"design","title":"가입설계","current":num(get(r,9)),"unit":"건","achieved":yn(10),"rule":hs_rules.get("design","")},
+            {"key":"targetDb","title":"타겟DB활용","current":num(get(r,11)),"unit":"%","achieved":yn(12),"rule":hs_rules.get("targetDb","")},
+            {"key":"weekly","title":"주차마감","current":num(get(r,13)),"unit":"원","achieved":yn(14),"rule":hs_rules.get("weekly","")},
+            {"key":"mainProduct","title":"주력상품","current":num(get(r,15)),"unit":"원","achieved":yn(16),"rule":hs_rules.get("mainProduct","")},
+            {"key":"plan","title":"누구나 플랜 참여","current":num(get(r,17)),"unit":"건","achieved":yn(18),"rule":hs_rules.get("plan","")},
+            {"key":"week1","title":"1주차 유실적 참여","current":num(get(r,20)),"unit":"원","goal":num(get(r,19)),"achieved":yn(21),"rule":hs_rules.get("week1","")},
+            {"key":"event","title":"입문접수 / 우수고객행사","current":num(get(r,22)),"unit":"명","achieved":yn(23),"rule":hs_rules.get("event","")},
+            {"key":"auto","title":"자동차보험","current":num(get(r,24)),"unit":"건","achieved":yn(25),"rule":hs_rules.get("auto","")}
+        ]
+        rec = {"region":get(r,0),"branch":get(r,2),"team":str(get(r,3)) if get(r,3) is not None else None,
+               "code":c,"name":get(r,5),"careerMonth":num(get(r,6),None),"missions":missions,
+               "sourceLineCount":num(get(r,27),0),"grade":get(r,28),"joker":str(get(r,31) or "").strip()}
+        data.setdefault(c, {})["hiStar"] = rec
+
     for c, rec in data.items():
         rec["code"] = c
         rec.setdefault("personalIncrease", None)
         rec.setdefault("honors", None)
         rec.setdefault("tcStepUp", None)
+        rec.setdefault("hiStar", None)
 
     tmp = OUT.with_name("planners_tmp")
     if tmp.exists(): shutil.rmtree(tmp)

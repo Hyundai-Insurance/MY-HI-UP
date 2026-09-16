@@ -11,6 +11,7 @@ const uiRenderer = {
     this.el("screen-loading").classList.toggle("hidden", screenName !== "loading");
     this.el("screen-error").classList.toggle("hidden", screenName !== "error");
     this.el("screen-result").classList.toggle("hidden", screenName !== "result");
+    this.el("screen-histar").classList.toggle("hidden", screenName !== "histar");
     window.scrollTo({ top: 0, behavior: "auto" });
   },
 
@@ -47,7 +48,7 @@ const uiRenderer = {
   },
 
   renderPlannerProfile(plannerData) {
-    const base = plannerData.personalIncrease || plannerData.honors || plannerData.tcStepUp;
+    const base = plannerData.personalIncrease || plannerData.honors || plannerData.tcStepUp || plannerData.hiStar;
     const honors = plannerData.honors;
 
     this.el("profile-region").textContent = base?.region || "-";
@@ -214,4 +215,41 @@ const uiRenderer = {
       awardBox.classList.add("is-pending");
     }
   },
+
+  renderHiStar(plannerData) {
+    const hs = plannerData.hiStar;
+    this.el("histar-closing").textContent = dateHelper.getClosingDateLabel();
+    const empty = this.el("histar-empty");
+    const content = this.el("histar-content");
+    if (!hs) {
+      empty.classList.remove("hidden"); content.classList.add("hidden"); this.showScreen("histar"); return;
+    }
+    empty.classList.add("hidden"); content.classList.remove("hidden");
+    this.el("hs-region").textContent = hs.region || "-"; this.el("hs-branch").textContent = hs.branch || "-";
+    this.el("hs-name").textContent = hs.name || "-"; this.el("hs-code").textContent = plannerData.code;
+    const cm = Number(hs.careerMonth); this.el("hs-month").textContent = Number.isFinite(cm) ? `${cm}차월` : "-";
+    this.el("hs-type").textContent = Number.isFinite(cm) && cm <= 12 ? "신인플래너" : "기존플래너";
+    const missions = Array.isArray(hs.missions) ? hs.missions.slice(0,9) : [];
+    const achieved = missions.map(m => !!m.achieved);
+    const combos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    const complete = combos.filter(line => line.every(i => achieved[i]));
+    const lineCells = new Set(complete.flat());
+    this.el("hs-count").textContent = `${achieved.filter(Boolean).length} / 9`;
+    this.el("hs-lines").textContent = `${complete.length}줄`;
+    const board = this.el("histar-board"); board.innerHTML = "";
+    const fmt = (m) => {
+      const v = Number(m.current || 0); if (m.unit === "원") return `${Math.round(v).toLocaleString("ko-KR")}원`;
+      return `${Number.isInteger(v) ? v : v.toLocaleString("ko-KR")}${m.unit || ""}`;
+    };
+    missions.forEach((m,i) => {
+      const btn=document.createElement("button"); btn.type="button"; btn.className=`hs-card${m.achieved?' is-achieved':''}${lineCells.has(i)?' is-line':''}`;
+      btn.setAttribute("aria-label",`${m.title} 상세 보기`);
+      btn.innerHTML=`<span class="hs-card-inner"><span class="hs-face hs-front"><span class="hs-num">${i+1}</span><span class="hs-title">${m.title}</span>${m.achieved?'<span class="hs-stamp">완료</span>':'<span class="hs-pending">미달성</span>'}</span><span class="hs-face hs-back"><span class="hs-back-title">${m.title}</span><span class="hs-current-label">현재 실적</span><span class="hs-current">${fmt(m)}</span><span class="hs-current-label">달성조건</span><span class="hs-rule">${m.rule || '-'}</span><span class="hs-status">${m.achieved?'✓ 달성 완료':'목표 달성에 도전해보세요'}</span></span></span>`;
+      btn.addEventListener("click",()=>btn.classList.toggle("is-flipped")); board.appendChild(btn);
+    });
+    const cel=this.el("histar-celebrate");
+    cel.textContent = complete.length ? `★ ${complete.length}줄 HI-STAR 완성!` : achieved.some(Boolean) ? `현재 ${achieved.filter(Boolean).length}개 미션 달성!` : "첫 HI-STAR 스탬프에 도전해보세요!";
+    this.showScreen("histar");
+  },
+
 };

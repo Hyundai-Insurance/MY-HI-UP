@@ -12,6 +12,8 @@ const app = {
     const submitBtn = uiRenderer.el("submit-btn");
     const backBtn = uiRenderer.el("back-btn");
     const retryBtn = uiRenderer.el("retry-btn");
+    const hsBtn = uiRenderer.el("open-histar-btn");
+    const hsBack = uiRenderer.el("histar-back-btn");
 
     input.addEventListener("input", () => {
       input.value = input.value
@@ -27,6 +29,8 @@ const app = {
     submitBtn.addEventListener("click", () => this._handleSubmit());
     backBtn.addEventListener("click", () => uiRenderer.renderLogin());
     retryBtn.addEventListener("click", () => window.location.reload());
+    hsBtn.addEventListener("click", () => { if (this._currentCode) uiRenderer.renderHiStar(dataLoader.findPlannerData(this._currentCode)); });
+    hsBack.addEventListener("click", () => uiRenderer.showScreen("result"));
   },
 
   async _handleSubmit() {
@@ -60,6 +64,7 @@ const app = {
   },
 
   _renderResultScreen(code) {
+    this._currentCode = code;
     const plannerData = dataLoader.findPlannerData(code);
     const currentMonth = new Date().getMonth() + 1;
     const displayMonth = [7, 8, 9].includes(currentMonth) ? currentMonth : 9;
