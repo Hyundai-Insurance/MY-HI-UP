@@ -1830,3 +1830,53 @@ button {
   #screen-histar .hs-reward-goal.is-primary > strong,
   #screen-histar .hs-reward-earned strong{font-size:32px !important;}
 }
+
+/* ===== HI-STAR REV16: deep HI-STAR stage + long-term conversion bonus ===== */
+#screen-histar{
+  background:linear-gradient(180deg,#173a72 0%,#234f86 48%,#173a72 100%);
+}
+#screen-histar .histar-header{
+  background:linear-gradient(135deg,#102f60 0%,#1f4e86 100%);
+}
+#screen-histar .histar-guide{
+  color:rgba(255,255,255,.88);
+  font-weight:750;
+}
+#screen-histar .result-footer{
+  color:rgba(255,255,255,.72);
+}
+#screen-histar .histar-celebrate{
+  box-shadow:0 5px 16px rgba(7,27,57,.16);
+}
+#screen-histar .histar-award{
+  box-shadow:0 8px 24px rgba(7,27,57,.18);
+}
+#screen-histar .hs-reward-bonus{
+  display:block;
+  width:100%;
+  margin-top:1px;
+  color:#9b6818;
+  font-size:13px;
+  line-height:1.25;
+  font-style:normal;
+  font-weight:900;
+  text-align:center;
+  letter-spacing:-.02em;
+}
+#screen-histar .hs-reward-goal.is-secondary{
+  flex-wrap:wrap;
+}
+#screen-histar .hs-reward-goal.is-secondary .hs-reward-bonus{
+  flex:0 0 100%;
+  margin-top:2px;
+  color:#315b91;
+  font-size:12px;
+  text-align:right;
+}
+#screen-histar .hs-reward-earned .hs-reward-bonus{
+  color:#9b6818;
+}
+@media(max-width:599px){
+  #screen-histar .hs-reward-bonus{font-size:12.5px}
+  #screen-histar .hs-reward-goal.is-secondary .hs-reward-bonus{font-size:11.5px}
+}

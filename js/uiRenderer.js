@@ -279,13 +279,13 @@ const uiRenderer = {
     const won = n => `${n.toLocaleString("ko-KR")}원`;
     let awardHtml='';
     if(currentAward >= 100000){
-      awardHtml=`<div class="hs-reward-kicker">💰 예상 시상금</div><div class="hs-reward-earned is-max"><span>현재 확보</span><strong>${won(currentAward)}</strong></div>`;
+      awardHtml=`<div class="hs-reward-kicker">💰 예상 시상금</div><div class="hs-reward-earned is-max"><span>현재 확보</span><strong>${won(currentAward)}</strong><em class="hs-reward-bonus">+ 장기신환산 1등급 UP</em></div>`;
     } else if(currentAward >= 50000){
-      const next = n10 == null ? '' : `<div class="hs-reward-goal is-primary"><span class="hs-reward-condition">🎯 <b>${n10}칸</b> 추가 달성 시</span><strong>100,000원</strong></div>`;
-      awardHtml=`<div class="hs-reward-kicker">💰 예상 시상금</div><div class="hs-reward-earned"><span>현재 확보</span><strong>${won(currentAward)}</strong></div>${next ? `<div class="hs-reward-next-label">다음 시상 달성하려면!</div>${next}` : ''}`;
+      const next = n10 == null ? '' : `<div class="hs-reward-goal is-primary"><span class="hs-reward-condition">🎯 <b>${n10}칸</b> 추가 달성 시</span><strong>100,000원</strong><em class="hs-reward-bonus">+ 장기신환산 1등급 UP</em></div>`;
+      awardHtml=`<div class="hs-reward-kicker">💰 예상 시상금</div><div class="hs-reward-earned"><span>현재 확보</span><strong>${won(currentAward)}</strong><em class="hs-reward-bonus">+ 장기신환산 1등급 UP</em></div>${next ? `<div class="hs-reward-next-label">다음 시상 달성하려면!</div>${next}` : ''}`;
     } else {
-      const first = n5 == null ? '' : `<div class="hs-reward-goal is-primary"><span class="hs-reward-condition"><b>${n5}칸</b> 추가 달성 시</span><strong>50,000원</strong></div>`;
-      const second = n10 == null ? '' : `<div class="hs-reward-next-label">다음 시상 달성하려면!</div><div class="hs-reward-goal is-secondary"><span class="hs-reward-condition">🎯 <b>${n10}칸</b> 추가 달성 시</span><strong>100,000원</strong></div>`;
+      const first = n5 == null ? '' : `<div class="hs-reward-goal is-primary"><span class="hs-reward-condition"><b>${n5}칸</b> 추가 달성 시</span><strong>50,000원</strong><em class="hs-reward-bonus">+ 장기신환산 1등급 UP</em></div>`;
+      const second = n10 == null ? '' : `<div class="hs-reward-next-label">다음 시상 달성하려면!</div><div class="hs-reward-goal is-secondary"><span class="hs-reward-condition">🎯 <b>${n10}칸</b> 추가 달성 시</span><strong>100,000원</strong><em class="hs-reward-bonus">+ 장기신환산 1등급 UP</em></div>`;
       awardHtml=`<div class="hs-reward-kicker">💰 예상 시상금</div>${first}${second}`;
     }
     award.innerHTML=awardHtml;
