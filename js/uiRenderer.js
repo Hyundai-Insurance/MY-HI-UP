@@ -275,14 +275,14 @@ const uiRenderer = {
     const won = n => `${n.toLocaleString("ko-KR")}원`;
     let awardHtml='';
     if(currentAward >= 100000){
-      awardHtml=`<div class="hs-reward-kicker">HI-STAR 시상 달성!</div><div class="hs-reward-earned"><span>현재 확보 시상금</span><strong>${won(currentAward)}</strong></div>`;
+      awardHtml=`<div class="hs-reward-kicker">💰 예상 시상금</div><div class="hs-reward-earned"><strong>${won(currentAward)}</strong><span>확보</span></div>`;
     } else if(currentAward >= 50000){
       const next = n10 == null ? '' : `<div class="hs-reward-target"><span class="hs-reward-more">+${n10}칸</span><span class="hs-reward-arrow">→</span><strong>100,000원</strong></div>`;
-      awardHtml=`<div class="hs-reward-kicker">현재 확보 시상금</div><div class="hs-reward-earned"><strong>${won(currentAward)}</strong><span>확보 🎉</span></div>${next ? `<div class="hs-reward-next-label">다음 시상까지</div>${next}` : ''}`;
+      awardHtml=`<div class="hs-reward-kicker">💰 예상 시상금</div><div class="hs-reward-earned"><strong>${won(currentAward)}</strong><span>현재 확보</span></div>${next ? `<div class="hs-reward-next-label">추가 달성 시</div>${next}` : ''}`;
     } else {
       const first = n5 == null ? '' : `<div class="hs-reward-target is-primary"><span class="hs-reward-more">+${n5}칸</span><span class="hs-reward-arrow">→</span><strong>50,000원</strong></div>`;
       const second = n10 == null ? '' : `<div class="hs-reward-target is-secondary"><span class="hs-reward-more">+${n10}칸</span><span class="hs-reward-arrow">→</span><strong>100,000원</strong></div>`;
-      awardHtml=`<div class="hs-reward-kicker">다음 시상까지</div>${first}${second}`;
+      awardHtml=`<div class="hs-reward-kicker">💰 예상 시상금</div>${first}${second}`;
     }
     award.innerHTML=awardHtml;
     this.showScreen("histar");
