@@ -233,7 +233,14 @@ const uiRenderer = {
     this.el("hs-name").textContent = hs.name || "-"; this.el("hs-code").textContent = plannerData.code;
     const cm = Number(hs.careerMonth); this.el("hs-month").textContent = Number.isFinite(cm) ? `${cm}차월` : "-";
     this.el("hs-type").textContent = Number.isFinite(cm) && cm <= 12 ? "신인플래너" : "기존플래너";
-    const missions = Array.isArray(hs.missions) ? hs.missions.slice(0,9) : [];
+    const missions = Array.isArray(hs.missions) ? hs.missions.slice(0,9).map(m => ({...m})) : [];
+    // 주력상품은 현재실적 100,000원 이상이면 달성으로 판정한다.
+    missions.forEach(m => {
+      if (m.key === "mainProduct") {
+        m.achieved = Number(m.current || 0) >= 100000;
+        m.rule = "10만원 이상";
+      }
+    });
     const achieved = missions.map(m => !!m.achieved);
     const combos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     const complete = combos.filter(line => line.every(i => achieved[i]));
@@ -268,11 +275,11 @@ const uiRenderer = {
           const goals = isNew ? [200000,400000,600000] : [400000,600000,800000];
           goal = goals[week - 1]; unit = "원"; break;
         }
+        case "mainProduct": goal = 100000; unit = "원"; break;
         case "plan": goal = 1; unit = "건"; break;
         case "week1": goal = Number(m.goal || 0) || 50000; unit = "원"; break;
         case "event": goal = 1; unit = "명"; break;
         case "auto": goal = isNew ? 1 : 2; unit = "건"; break;
-        // 주력상품은 상품종류 자체가 조건이라 금액만으로 정확한 부족분을 계산할 수 없다.
         default: return "미달성";
       }
       const gap = Math.max(goal - current, 0);
