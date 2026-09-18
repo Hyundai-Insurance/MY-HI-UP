@@ -1906,3 +1906,21 @@ button {
     background:linear-gradient(135deg,#f7ce72 0%,#edb443 100%) !important;
   }
 }
+
+
+/* ===== 2026-09-18 HI-STAR: show remaining amount before flip ===== */
+#screen-histar .hs-shortfall{
+  margin-top:8px;
+  padding:4px 7px;
+  border-radius:999px;
+  background:#fff6e9;
+  color:#c66a2f;
+  font-size:clamp(10px,2.8vw,12px);
+  font-weight:900;
+  line-height:1.2;
+  letter-spacing:-.025em;
+  white-space:nowrap;
+}
+@media(max-width:360px){
+  #screen-histar .hs-shortfall{font-size:9.5px;padding:4px 5px}
+}

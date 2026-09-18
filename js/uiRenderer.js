@@ -245,10 +245,46 @@ const uiRenderer = {
       const v = Number(m.current || 0); if (m.unit === "원") return `${Math.round(v).toLocaleString("ko-KR")}원`;
       return `${Number.isInteger(v) ? v : v.toLocaleString("ko-KR")}${m.unit || ""}`;
     };
+
+    // 미달성 카드는 누르기 전에도 "얼마나 더 필요한지" 바로 보여준다.
+    // 달성 여부(Y/N)는 기존 백데이터를 그대로 신뢰하고, 부족분만 화면용으로 계산한다.
+    const shortfallText = (m) => {
+      if (m.achieved) return "";
+      const current = Number(m.current || 0);
+      const isNew = Number.isFinite(cm) && cm <= 12;
+      let goal = null;
+      let unit = m.unit || "";
+
+      switch (m.key) {
+        case "consent": goal = 5; unit = "건"; break;
+        case "design": goal = 20; unit = "건"; break;
+        case "targetDb": goal = isNew ? 5 : 70; unit = isNew ? "명" : "%"; break;
+        case "weekly": {
+          // 하이스타 기준표: 1/2/3주차 누적 기준. 마감 기준일에 맞춰 현재 주차를 선택한다.
+          const closing = dateHelper.getClosingDateLabel ? dateHelper.getClosingDateLabel() : "";
+          const dayMatch = String(closing).match(/(\d{1,2})일/);
+          const day = dayMatch ? Number(dayMatch[1]) : new Date().getDate();
+          const week = day <= 7 ? 1 : day <= 14 ? 2 : 3;
+          const goals = isNew ? [200000,400000,600000] : [400000,600000,800000];
+          goal = goals[week - 1]; unit = "원"; break;
+        }
+        case "plan": goal = 1; unit = "건"; break;
+        case "week1": goal = Number(m.goal || 0) || 50000; unit = "원"; break;
+        case "event": goal = 1; unit = "명"; break;
+        case "auto": goal = isNew ? 1 : 2; unit = "건"; break;
+        // 주력상품은 상품종류 자체가 조건이라 금액만으로 정확한 부족분을 계산할 수 없다.
+        default: return "미달성";
+      }
+      const gap = Math.max(goal - current, 0);
+      if (unit === "원") return `${Math.round(gap).toLocaleString("ko-KR")}원 부족`;
+      return `${Number.isInteger(gap) ? gap : gap.toLocaleString("ko-KR")}${unit} 부족`;
+    };
+
     missions.forEach((m,i) => {
       const btn=document.createElement("button"); btn.type="button"; btn.className=`hs-card${m.achieved?' is-achieved':''}${lineCells.has(i)?' is-line':''}`;
       btn.setAttribute("aria-label",`${m.title} 상세 보기`);
-      btn.innerHTML=`<span class="hs-card-inner"><span class="hs-face hs-front"><span class="hs-num">${i+1}</span><span class="hs-title">${m.title}</span>${m.achieved?'<span class="hs-stamp">완료</span>':'<span class="hs-pending">미달성</span>'}</span><span class="hs-face hs-back"><span class="hs-back-title">${m.title}</span><span class="hs-current-label">현재 실적</span><span class="hs-current">${fmt(m)}</span><span class="hs-current-label">달성조건</span><span class="hs-rule">${m.rule || '-'}</span></span></span>`;
+      const pending = shortfallText(m);
+      btn.innerHTML=`<span class="hs-card-inner"><span class="hs-face hs-front"><span class="hs-num">${i+1}</span><span class="hs-title">${m.title}</span>${m.achieved?'<span class="hs-stamp">완료</span>':`<span class="hs-pending hs-shortfall">${pending}</span>`}</span><span class="hs-face hs-back"><span class="hs-back-title">${m.title}</span><span class="hs-current-label">현재 실적</span><span class="hs-current">${fmt(m)}</span><span class="hs-current-label">달성조건</span><span class="hs-rule">${m.rule || '-'}</span></span></span>`;
       btn.addEventListener("click",()=>btn.classList.toggle("is-flipped")); board.appendChild(btn);
     });
     const cel=this.el("histar-celebrate");
